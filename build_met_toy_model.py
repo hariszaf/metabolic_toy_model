@@ -79,11 +79,8 @@ set_of_metabolites       = set()
 for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
 
     reaction_name = row[2]
-
     if row[1] != None:
-        
         for entry in modelSEED_reactions:
-        
             """
             example of an entry:
             {'abbreviation': 'GLCt2', 'abstract_reaction': None, 
@@ -109,7 +106,11 @@ for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
                     for term in modelSEED_compounds:
                         if term["id"] == metabolite:
                             set_of_metabolites.add(metabolite)
-                            model_metabolite = Metabolite(term["id"], name = term["name"], formula = term["formula"], compartment = "c")
+                            if row[4] == metabolite:
+                                comp = "e"
+                            else:
+                                comp = "c"
+                            model_metabolite = Metabolite(term["id"], name = term["name"], formula = term["formula"], compartment = comp)
                             model.add_metabolites([model_metabolite])
 
                 bt_reactions_with_rxn_id.append(entry)
@@ -138,15 +139,6 @@ for reaction in manual_reactions:
         if i not in manual_compounds:
             manual_compounds.append(i)
 
-# Parse manual reactions to link their compounds to the ModelSEED ones
-for compound in manual_compounds: 
-    for modelSEED_compound in modelSEED_compounds: 
-        if modelSEED_compound["name"] == compound: 
-            model_metabolite = Metabolite(term["id"], name = term["name"], formula = term["formula"])
-            model.add_metabolites([model_metabolite])
-            break
-
-
 # Init model using the reactions that correspond to ModelSEED ids
 for case in bt_reactions_with_rxn_id:
 
@@ -161,9 +153,17 @@ for case in bt_reactions_with_rxn_id:
         stoichiometry = participant.split(":")[0]
         reaction.add_metabolites({metabolite : int(stoichiometry)})
 
+
+# Parse manual reactions to link their compounds to the ModelSEED ones
+for compound in manual_compounds: 
+    for modelSEED_compound in modelSEED_compounds: 
+        if modelSEED_compound["name"] == compound: 
+            model_metabolite = Metabolite(term["id"], name = term["name"], formula = term["formula"])
+            model.add_metabolites([model_metabolite])
+            break
+
 # Add the biomass and other non ModelSEED reactions
 for reaction in manual_reactions:
-
     print(reaction)
 sys.exit(0)
 # model.objective = 'biomass'
