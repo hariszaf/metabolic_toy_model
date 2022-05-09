@@ -124,28 +124,38 @@ for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
                 entry["lower_bound"] = -1000
 
                 # Add compounds
+                switch = False
+                comp   = "c"
+                to_be_exchanged = []
                 for participant in entry["stoichiometry"].split(";"):
-                    metabolite    = participant.split(":")[1]
-                    if metabolite in set_of_metabolites: 
-                        continue
+                    metabolite = participant.split(":")[1]
                     for term in modelSEED_compounds:
+                        mt_id = term["id"] + "_" + comp
                         if term["id"] == metabolite:
-                            set_of_metabolites.add(metabolite)
-                            comp = "c"
                             if row[4] != None:
-                                if term["name"] in row[4]:
-                                    print("match")
-                                    comp = "e"
-                                    mt_id = term["id"]
-                            model_metabolite = Metabolite(term["id"], \
-                                                          name        = term["name"], \
-                                                          formula     = term["formula"], \
-                                                          compartment = comp)
+                                switch = True 
+
+                            model_metabolite = Metabolite(mt_id, \
+                                                        name        = term["name"], \
+                                                        formula     = term["formula"], \
+                                                        compartment = comp)
                             model.add_metabolites([model_metabolite])
+                            set_of_metabolites.add(mt_id)
+
+                            if switch: 
+                                comp = "e"
+                                mt_id = term["id"] + "_" + comp
+                                model_metabolite = Metabolite(mt_id, \
+                                                            name        = term["name"], \
+                                                            formula     = term["formula"], \
+                                                            compartment = comp)
+                                model.add_metabolites([model_metabolite])
+                                set_of_metabolites.add(mt_id)
+                                to_be_exchanged.append(mt_id)
 
                 # Add reaction
                 if row[4] != None:
-                    model.add_boundary(model.metabolites.get_by_id(mt_id), type="exchange")
+                    model.add_boundary(model.metabolites.get_by_id(to_be_exchanged[0]), type = "exchange")
 
                 else:
                     reaction = Reaction(entry["id"])
@@ -155,7 +165,7 @@ for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
                     reaction.upper_bound = entry["upper_bound"]
 
                     for participant in entry["stoichiometry"].split(";"):
-                        metabolite    = participant.split(":")[1]
+                        metabolite    = participant.split(":")[1] + "_c"
                         stoichiometry = participant.split(":")[0]
                         reaction.add_metabolites({metabolite : int(stoichiometry)})
 
@@ -225,14 +235,15 @@ for case in manual_reactions:
 for reaction in model.reactions:
     print(reaction)
 
-# ---------------------
-# Model validation
-# ---------------------
+model.objective = 'biomass'
 
-import tempfile
+
+# ---------------------
+# Model validation & .xml writing
+# ---------------------
 from pprint import pprint
 from cobra.io import write_sbml_model, validate_sbml_model
-with tempfile.NamedTemporaryFile(suffix = '.xml') as f_sbml:
+with open('bt_toy_model.xml', "w") as f_sbml:
     write_sbml_model(model, filename = f_sbml.name)
     report = validate_sbml_model(filename = f_sbml.name)
 
