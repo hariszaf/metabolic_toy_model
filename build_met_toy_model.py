@@ -172,70 +172,71 @@ for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
 
                 bt_reactions_with_rxn_id.append(entry)
     else:
-        manual_reactions.append((row[3], row[4], row[0]))
+        pass
+        #manual_reactions.append((row[3], row[4], row[0]))
 
 
 
 # Parse manual reactions
-manual_compounds = []
-counter = 0
-for case in manual_reactions:
-    reaction = case[0]
-    exchange = case[1]
-    react_id = case[2]
+# manual_compounds = []
+# counter = 0
+# for case in manual_reactions:
+#     reaction = case[0]
+#     exchange = case[1]
+#     react_id = case[2]
 
-    modules = []
+#     modules = []
 
-    react_part    = re.split('<=>|<=|=>', reaction)[0]
-    product_part  = re.split('<=>|<=|=>', reaction)[1]
+#     react_part    = re.split('<=>|<=|=>', reaction)[0]
+#     product_part  = re.split('<=>|<=|=>', reaction)[1]
 
-    tmp = react_part.split(" + ")
+#     tmp = react_part.split(" + ")
 
-    for i in tmp:
-        module = parse_manual_reaction(i, "r")
-        modules.append(module)
+#     for i in tmp:
+#         module = parse_manual_reaction(i, "r")
+#         modules.append(module)
 
-    tmp = product_part.split(" + ")
-    for i in tmp:
-        module = parse_manual_reaction(i, "p")
-        modules.append(module)
+#     tmp = product_part.split(" + ")
+#     for i in tmp:
+#         module = parse_manual_reaction(i, "p")
+#         modules.append(module)
 
-    # Add compounds to the model 
-    for module in modules:
-        compound = module[1]
-        counter  += 1
-        compound_in_SEED = False
-        for modelSEED_compound in modelSEED_compounds: 
-            if modelSEED_compound["name"] == compound: 
-                compound_in_SEED = True
-                comp = "c"
-                if exchange != None:
-                    if compound in exchange:
-                        comp = "e"
-                model_metabolite = Metabolite(compound, name = compound,\
-                                              compartment = comp)
-                model.add_metabolites([model_metabolite])
-                break
-        if compound_in_SEED == False:
-            print(compound, " not in ModelSEED")
+#     # Add compounds to the model 
+#     for module in modules:
+#         compound = module[1]
+#         counter  += 1
+#         compound_in_SEED = False
+#         for modelSEED_compound in modelSEED_compounds: 
+#             if modelSEED_compound["name"] == compound: 
+#                 compound_in_SEED = True
+#                 comp = "c"
+#                 if exchange != None:
+#                     if compound in exchange:
+#                         comp = "e"
+#                 model_metabolite = Metabolite(compound, name = compound,\
+#                                               compartment = comp)
+#                 model.add_metabolites([model_metabolite])
+#                 break
+#         if compound_in_SEED == False:
+#             print(compound, " not in ModelSEED")
 
-    # Add reaction to the model
-    reaction = Reaction(react_id)
-    model.add_reactions([reaction])
-    reaction.name = react_id
-    reaction.lower_bound = -1000
-    reaction.upper_bound = 1000
+#     # Add reaction to the model
+#     reaction = Reaction(react_id)
+#     model.add_reactions([reaction])
+#     reaction.name = react_id
+#     reaction.lower_bound = -1000
+#     reaction.upper_bound = 1000
 
-    for participant in modules:
-        metabolite    = participant[1]
-        stoichiometry = participant[0]
-        reaction.add_metabolites({metabolite : int(stoichiometry)})
+#     for participant in modules:
+#         metabolite    = participant[1]
+#         stoichiometry = participant[0]
+#         reaction.add_metabolites({metabolite : int(stoichiometry)})
 
 
 for reaction in model.reactions:
     print(reaction)
 
-model.objective = 'biomass'
+#model.objective = 'biomass'
 
 
 # ---------------------
