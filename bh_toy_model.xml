@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sbml xmlns="http://www.sbml.org/sbml/level3/version1/core" xmlns:fbc="http://www.sbml.org/sbml/level3/version1/fbc/version2" sboTerm="SBO:0000624" level="3" version="1" fbc:required="false">
-  <model metaid="meta_toy_bt" id="toy_bt" fbc:strict="true">
+  <model metaid="meta_toy_bh" id="toy_bh" fbc:strict="true">
     <listOfUnitDefinitions>
       <unitDefinition id="mmol_per_gDW_per_hr">
         <listOfUnits>
@@ -50,13 +50,9 @@
       <species id="M_cpd00196_c" name="Acetylphosphate" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:chemicalFormula="C2H3O5P"/>
       <species id="M_cpd00029_c" name="Acetate" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:chemicalFormula="C2H3O2"/>
       <species id="M_cpd00159_c" name="L-Lactate" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:chemicalFormula="C3H5O3"/>
-      <species id="M_cpd00036_e" name="Succinate" compartment="e" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false" fbc:chemicalFormula="C4H4O4"/>
       <species id="M_cpd28082_c" name="cpd28082_c" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="M_cpd27757_c" name="cpd27757_c" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
       <species id="M_cpd11416_c" name="cpd11416_c" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="M_cpd00047_e" name="cpd00047_e" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="M_cpd30644_e" name="cpd30644_e" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
-      <species id="M_cpd00029_e" name="cpd00029_e" compartment="c" hasOnlySubstanceUnits="false" boundaryCondition="false" constant="false"/>
     </listOfSpecies>
     <listOfParameters>
       <parameter sboTerm="SBO:0000626" id="cobra_default_lb" value="-1000" constant="true"/>
@@ -295,11 +291,6 @@
           <speciesReference species="M_cpd00067_c" stoichiometry="1" constant="true"/>
         </listOfProducts>
       </reaction>
-      <reaction metaid="meta_R_EX_cpd00036_e" sboTerm="SBO:0000627" id="R_EX_cpd00036_e" name="Succinate exchange" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
-        <listOfReactants>
-          <speciesReference species="M_cpd00036_e" stoichiometry="1" constant="true"/>
-        </listOfReactants>
-      </reaction>
       <reaction id="R_RNF" name="RNF" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
         <listOfReactants>
           <speciesReference species="M_cpd00067_c" stoichiometry="1" constant="true"/>
@@ -324,21 +315,6 @@
           <speciesReference species="M_cpd00003_c" stoichiometry="2" constant="true"/>
           <speciesReference species="M_cpd00010_c" stoichiometry="2" constant="true"/>
         </listOfProducts>
-      </reaction>
-      <reaction id="R_EX_cpd00047_e" name="EX_for_e" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
-        <listOfReactants>
-          <speciesReference species="M_cpd00047_e" stoichiometry="1" constant="true"/>
-        </listOfReactants>
-      </reaction>
-      <reaction id="R_EX_cpd30644_e" name="EX_lac__L_e" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
-        <listOfReactants>
-          <speciesReference species="M_cpd30644_e" stoichiometry="1" constant="true"/>
-        </listOfReactants>
-      </reaction>
-      <reaction id="R_EX_cpd00029_e" name="EX_ac_e" reversible="true" fast="false" fbc:lowerFluxBound="cobra_default_lb" fbc:upperFluxBound="cobra_default_ub">
-        <listOfReactants>
-          <speciesReference species="M_cpd00029_e" stoichiometry="1" constant="true"/>
-        </listOfReactants>
       </reaction>
     </listOfReactions>
     <fbc:listOfObjectives fbc:activeObjective="obj">

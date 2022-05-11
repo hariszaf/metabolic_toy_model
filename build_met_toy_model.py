@@ -46,6 +46,166 @@ def parse_manual_reaction(tmp, part):
     return ([stoichiometry, compound])
 
 
+# Main function to parse a sheet with reactions 
+def build_toy_model(sheet_with_reactions, model):
+
+    # Reading sheet per row
+    reactions_with_rxn_id = []
+    manual_reactions         = []
+    set_of_metabolites       = set()
+
+    for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
+        reaction_name = row[2]
+        if row[1] != None:
+            for entry in modelSEED_reactions:
+
+                if entry["name"] == reaction_name:
+                    entry["upper_bound"] = 1000
+                    entry["lower_bound"] = -1000
+
+                    # Add compounds
+                    switch = False
+                    comp   = "c"
+                    to_be_exchanged = []
+                    for participant in entry["stoichiometry"].split(";"):
+                        metabolite = participant.split(":")[1]
+                        for term in modelSEED_compounds:
+                            mt_id = term["id"] + "_" + comp
+                            if term["id"] == metabolite:
+                                if row[4] != None:
+                                    switch = True 
+
+                                model_metabolite = Metabolite(mt_id, \
+                                                            name        = term["name"], \
+                                                            formula     = term["formula"], \
+                                                            compartment = comp)
+                                model.add_metabolites([model_metabolite])
+                                set_of_metabolites.add(mt_id)
+
+                                if switch: 
+                                    comp = "e"
+                                    mt_id = term["id"] + "_" + comp
+                                    model_metabolite = Metabolite(mt_id, \
+                                                                name        = term["name"], \
+                                                                formula     = term["formula"], \
+                                                                compartment = comp)
+                                    model.add_metabolites([model_metabolite])
+                                    set_of_metabolites.add(mt_id)
+                                    to_be_exchanged.append(mt_id)
+                    # Add reaction
+                    if row[4] != None:
+                        model.add_boundary(model.metabolites.get_by_id(to_be_exchanged[0]), type = "exchange")
+                    else:
+                        reaction = Reaction(entry["id"])
+                        model.add_reactions([reaction])
+                        reaction.name = entry["name"]
+                        reaction.lower_bound = entry["lower_bound"]
+                        reaction.upper_bound = entry["upper_bound"]
+
+                        for participant in entry["stoichiometry"].split(";"):
+                            metabolite    = participant.split(":")[1] + "_c"
+                            stoichiometry = participant.split(":")[0]
+                            reaction.add_metabolites({metabolite : int(stoichiometry)})
+
+                    reactions_with_rxn_id.append(entry)
+        else:
+            manual_reactions.append((row[3], row[4], row[0]))
+
+    # Parse manual reactions
+    for case in manual_reactions:
+        check = True
+        reaction = case[0]
+        exchange = case[1]
+        react_id = case[2]
+
+        modules = []
+
+        react_part    = re.split('<=>|<=|=>', reaction)[0].strip()
+        product_part  = re.split('<=>|<=|=>', reaction)[1].strip()
+
+        tmp = react_part.split(" + ")
+
+        for i in tmp:
+            module = parse_manual_reaction(i, "r")
+            modules.append(module)
+
+        tmp = product_part.split(" + ")
+        for i in tmp:
+            module = parse_manual_reaction(i, "p")
+            modules.append(module)
+
+        # Add compounds to the model 
+        for index, module in enumerate(modules):
+            if check == False:
+                break
+            compound         = module[1]
+            compound_in_SEED = False
+
+            for modelSEED_compound in modelSEED_compounds: 
+
+                if modelSEED_compound["name"] == compound: 
+                    # Check whether this is an exchange reaction and you need only a sole metabolite
+                    if react_part == product_part and "EX_" in row[0]:
+
+                        mt_id            = compounds_to_ids[compound] + "_e"
+                        model_metabolite = Metabolite(mt_id, \
+                                                    name        = mt_id,\
+                                                    compartment = comp)
+                        model.add_metabolites([model_metabolite])
+
+                        react = Reaction('EX_' + mt_id)
+                        model.add_reactions([react])
+                        react.name = react_id
+                        react.lower_bound = -1000
+                        react.upper_bound = 1000
+                        react.add_metabolites({mt_id:-1})
+                        check = False
+                        compound_in_SEED = True
+                        break
+
+                    else:
+                        compound_in_SEED = True
+                        comp             = "c"
+                        sbml_compound    = compounds_to_ids[compound]
+
+                        mt_id = sbml_compound + "_" + comp
+
+                        model_metabolite = Metabolite(mt_id, \
+                                                    name        = mt_id,\
+                                                    compartment = comp)
+                        model.add_metabolites([model_metabolite])
+                        modules[index][1] = mt_id
+
+                        if exchange != None:
+                            comp = "e"
+                            mt_id = sbml_compound + "_" + comp
+                            model_metabolite = Metabolite(mt_id, \
+                                                        name        = mt_id,\
+                                                        compartment = comp)
+                            model.add_metabolites([model_metabolite])
+                        break
+
+            if compound_in_SEED == False:
+                print(compound, " not in ModelSEED")
+
+        if check == False:
+            continue
+
+        # Add reaction to the model
+        reaction = Reaction(react_id)
+        model.add_reactions([reaction])
+        reaction.name = react_id
+        reaction.lower_bound = -1000
+        reaction.upper_bound = 1000
+
+        for participant in modules:
+            metabolite    = participant[1]
+            stoichiometry = participant[0]
+            reaction.add_metabolites({metabolite : int(stoichiometry)})
+
+    model.objective = 'biomass'
+    return model
+
 
 # --------------------
 # Part A: ModelSEED ids - names dictionary 
@@ -81,189 +241,67 @@ with open('comp_names_to_modelSEED_ids.json', 'w') as outfile:
 
 
 # --------------------
-# Part B
+# Part B1: Glucose fermenter (bt)
 # --------------------
 
 
 # Init model 
-model = Model('toy_bt')
-
-# Set cases of extracellular 
-
+init_model = Model('toy_bt')
 
 # Read toy model's reactions 
 my_reactions_excel = load_workbook(filename = 'metabolicReactions.xlsx')
 bt_reactions_sheet = my_reactions_excel["bt"]
 
-# Reading sheet per row
-bt_reactions_with_rxn_id = []
-manual_reactions         = []
-set_of_metabolites       = set()
+# Build model
+bt_model = build_toy_model(bt_reactions_sheet, init_model)
 
-for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
-
-    reaction_name = row[2]
-    if row[1] != None:
-        for entry in modelSEED_reactions:
-            """
-            example of an entry:
-            {'abbreviation': 'GLCt2', 'abstract_reaction': None, 
-            'aliases': ['BiGG: GLCt2; GLCt2pp', 'MetaCyc: RXN0-7077', 'iAF1260: GLCt2pp', 'iAG612: rbs_312; rbs_313', 'iAO358: rll_538', 'Name: D-glucose transport in via proton symport; D-glucose:proton symport; D-glucosetransportinviaprotonsymport'], 
-            'code': '(1) cpd00027[1] <=> (1) cpd00027[0]', 
-            'compound_ids': 'cpd00027;cpd00067', 
-            'definition': '(1) D-Glucose[1] + (1) H+[1] <=> (1) D-Glucose[0] + (1) H+[0]', 
-            'deltag': 0.0, 'deltagerr': 2.18, 'direction': '=', 'ec_numbers': None, 
-            'equation': '(1) cpd00027[1] + (1) cpd00067[1] <=> (1) cpd00027[0] + (1) cpd00067[0]', 
-            'id': 'rxn05573', 'is_obsolete': 0, 'is_transport': 1, 'linked_reaction': 'rxn08616', 'name': 'D-glucose transport in via proton symport', 
-            'notes': ['GCC', 'EQC'], 'pathways': ['MetaCyc: Alcohol-Biosynthesis (Fermentation to Alcohols); Energy-Metabolism (Generation of Precursor Metabolite and Energy); Fermentation (); PWY-7385 (1,3-propanediol biosynthesis (engineered))'], 
-            'reversibility': '=', 'source': 'Primary Database', 'status': 'OK', 
-            'stoichiometry': '-1:cpd00027:1:0:"D-Glucose";-1:cpd00067:1:0:"H+";1:cpd00027:0:0:"D-Glucose";1:cpd00067:0:0:"H+"'}
-            """
-            if entry["name"] == reaction_name:
-                entry["upper_bound"] = 1000
-                entry["lower_bound"] = -1000
-
-                # Add compounds
-                switch = False
-                comp   = "c"
-                to_be_exchanged = []
-                for participant in entry["stoichiometry"].split(";"):
-                    metabolite = participant.split(":")[1]
-                    for term in modelSEED_compounds:
-                        mt_id = term["id"] + "_" + comp
-                        if term["id"] == metabolite:
-                            if row[4] != None:
-                                switch = True 
-
-                            model_metabolite = Metabolite(mt_id, \
-                                                        name        = term["name"], \
-                                                        formula     = term["formula"], \
-                                                        compartment = comp)
-                            model.add_metabolites([model_metabolite])
-                            set_of_metabolites.add(mt_id)
-
-                            if switch: 
-                                comp = "e"
-                                mt_id = term["id"] + "_" + comp
-                                model_metabolite = Metabolite(mt_id, \
-                                                            name        = term["name"], \
-                                                            formula     = term["formula"], \
-                                                            compartment = comp)
-                                model.add_metabolites([model_metabolite])
-                                set_of_metabolites.add(mt_id)
-                                to_be_exchanged.append(mt_id)
-
-                # Add reaction
-                if row[4] != None:
-                    model.add_boundary(model.metabolites.get_by_id(to_be_exchanged[0]), type = "exchange")
-
-                else:
-                    reaction = Reaction(entry["id"])
-                    model.add_reactions([reaction])
-                    reaction.name = entry["name"]
-                    reaction.lower_bound = entry["lower_bound"]
-                    reaction.upper_bound = entry["upper_bound"]
-
-                    for participant in entry["stoichiometry"].split(";"):
-                        metabolite    = participant.split(":")[1] + "_c"
-                        stoichiometry = participant.split(":")[0]
-                        reaction.add_metabolites({metabolite : int(stoichiometry)})
-
-
-                bt_reactions_with_rxn_id.append(entry)
-    else:
-        # pass
-        manual_reactions.append((row[3], row[4], row[0]))
-
-
-
-# Parse manual reactions
-
-for case in manual_reactions:
-    reaction = case[0]
-    exchange = case[1]
-    react_id = case[2]
-
-    modules = []
-
-    react_part    = re.split('<=>|<=|=>', reaction)[0]
-    product_part  = re.split('<=>|<=|=>', reaction)[1]
-
-    tmp = react_part.split(" + ")
-
-    for i in tmp:
-        module = parse_manual_reaction(i, "r")
-        modules.append(module)
-
-    tmp = product_part.split(" + ")
-    for i in tmp:
-        module = parse_manual_reaction(i, "p")
-        modules.append(module)
-
-    # Add compounds to the model 
-    for index, module in enumerate(modules):
-
-        compound         = module[1]
-        compound_in_SEED = False
-
-        for modelSEED_compound in modelSEED_compounds: 
-            if modelSEED_compound["name"] == compound: 
-
-                compound_in_SEED = True
-                comp             = "c"
-                sbml_compound    = compounds_to_ids[compound]
-
-                mt_id = sbml_compound + "_" + comp
-
-                model_metabolite = Metabolite(mt_id, \
-                                              name        = mt_id,\
-                                              compartment = comp)
-                model.add_metabolites([model_metabolite])
-                modules[index][1] = mt_id
-
-                if exchange != None:
-                    comp = "e"
-                    mt_id = sbml_compound + "_" + comp
-                    model_metabolite = Metabolite(mt_id, \
-                                                name        = mt_id,\
-                                                compartment = comp)
-                    model.add_metabolites([model_metabolite])
-                break
-
-        if compound_in_SEED == False:
-            print(compound, " not in ModelSEED")
-
-    # Add reaction to the model
-    reaction = Reaction(react_id)
-    model.add_reactions([reaction])
-    reaction.name = react_id
-    reaction.lower_bound = -1000
-    reaction.upper_bound = 1000
-
-    for participant in modules:
-        metabolite    = participant[1]
-        stoichiometry = participant[0]
-        reaction.add_metabolites({metabolite : int(stoichiometry)})
-
-
-for reaction in model.reactions:
-    print(reaction)
-
-model.objective = 'biomass'
-
-
-# ---------------------
-# Model validation & .xml writing
-# ---------------------
+# Validate and write model in a .xml file
 from pprint import pprint
 from cobra.io import write_sbml_model, validate_sbml_model
 with open('bt_toy_model.xml', "w") as f_sbml:
-    write_sbml_model(model, filename = f_sbml.name)
+    write_sbml_model(bt_model, filename = f_sbml.name)
     report = validate_sbml_model(filename = f_sbml.name)
 
 pprint(report)
+sys.exit(0)
+
+# --------------------
+# Part B2: butyrate producer (ri)
+# --------------------
+
+# Init model 
+init_model = Model('toy_ri')
+
+# Read toy model's reactions 
+ri_reactions_sheet = my_reactions_excel["ri"]
+
+# Build model
+ri_model = build_toy_model(ri_reactions_sheet, init_model)
+
+# Validate and write model in a .xml file 
+with open('ri_toy_model.xml', "w") as f_sbml:
+    write_sbml_model(ri_model, filename = f_sbml.name)
+    report = validate_sbml_model(filename = f_sbml.name)
+pprint(report)
 
 
+# --------------------
+# Part B3: acetogen (bh)
+# --------------------
 
+# Init model 
+init_model = Model('toy_bh')
 
+# Read toy model's reactions 
+bh_reactions_sheet = my_reactions_excel["bh"]
+
+# Build model
+bh_model = build_toy_model(bh_reactions_sheet, init_model)
+
+# Validate and write model in a .xml file 
+with open('bh_toy_model.xml', "w") as f_sbml:
+    write_sbml_model(bh_model, filename = f_sbml.name)
+    report = validate_sbml_model(filename = f_sbml.name)
+
+pprint(report)
 
