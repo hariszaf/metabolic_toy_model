@@ -54,7 +54,7 @@ def build_toy_model(sheet_with_reactions, model):
     manual_reactions         = []
     set_of_metabolites       = set()
 
-    for row in bt_reactions_sheet.iter_rows(min_row=1, max_col=5, values_only=True):
+    for row in sheet_with_reactions.iter_rows(min_row=1, max_col=5, values_only=True):
         reaction_name = row[2]
         if row[1] != None:
             for entry in modelSEED_reactions:
@@ -203,7 +203,7 @@ def build_toy_model(sheet_with_reactions, model):
             stoichiometry = participant[0]
             reaction.add_metabolites({metabolite : int(stoichiometry)})
 
-    model.objective = 'biomass'
+    #model.objective = 'biomass'
     return model
 
 
@@ -245,17 +245,17 @@ with open('comp_names_to_modelSEED_ids.json', 'w') as outfile:
 # --------------------
 
 
-# Init model 
+#Init model 
 init_model = Model('toy_bt')
 
 # Read toy model's reactions 
-my_reactions_excel = load_workbook(filename = 'metabolicReactions.xlsx')
-bt_reactions_sheet = my_reactions_excel["bt"]
+my_reactions_excel = load_workbook(filename = 'metabolicReactions2.xlsx')
+bt_reactions_sheet = my_reactions_excel["BT_metabolicReactions"]
 
 # Build model
 bt_model = build_toy_model(bt_reactions_sheet, init_model)
 
-# Validate and write model in a .xml file
+#Validate and write model in a .xml file
 from pprint import pprint
 from cobra.io import write_sbml_model, validate_sbml_model
 with open('bt_toy_model.xml', "w") as f_sbml:
@@ -269,20 +269,21 @@ sys.exit(0)
 # Part B2: butyrate producer (ri)
 # --------------------
 
-# Init model 
-init_model = Model('toy_ri')
+# # Init model 
+# init_model = Model('toy_ri')
 
-# Read toy model's reactions 
-ri_reactions_sheet = my_reactions_excel["ri"]
+# # Read toy model's reactions 
+# my_reactions_excel = load_workbook(filename = 'metabolicReactions.xlsx')
+# ri_reactions_sheet = my_reactions_excel["ri"]
 
-# Build model
-ri_model = build_toy_model(ri_reactions_sheet, init_model)
-
-# Validate and write model in a .xml file 
-with open('ri_toy_model.xml', "w") as f_sbml:
-    write_sbml_model(ri_model, filename = f_sbml.name)
-    report = validate_sbml_model(filename = f_sbml.name)
-pprint(report)
+# # Build model
+# ri_model = build_toy_model(ri_reactions_sheet, init_model)
+# cobra.io.write_sbml_model(ri_model, 'ri_toy_model2.xml')
+# # Validate and write model in a .xml file 
+# with open('ri_toy_model.xml', "w") as f_sbml:
+#     write_sbml_model(ri_model, filename = f_sbml.name)
+#     report = validate_sbml_model(filename = f_sbml.name)
+# pprint(report)
 
 
 # --------------------
@@ -290,18 +291,18 @@ pprint(report)
 # --------------------
 
 # Init model 
-init_model = Model('toy_bh')
+# init_model = Model('toy_bh')
 
-# Read toy model's reactions 
-bh_reactions_sheet = my_reactions_excel["bh"]
+# # Read toy model's reactions 
+# bh_reactions_sheet = my_reactions_excel["bh"]
 
-# Build model
-bh_model = build_toy_model(bh_reactions_sheet, init_model)
+# # Build model
+# bh_model = build_toy_model(bh_reactions_sheet, init_model)
 
 # Validate and write model in a .xml file 
-with open('bh_toy_model.xml', "w") as f_sbml:
-    write_sbml_model(bh_model, filename = f_sbml.name)
-    report = validate_sbml_model(filename = f_sbml.name)
+# with open('bh_toy_model.xml', "w") as f_sbml:
+#     write_sbml_model(bh_model, filename = f_sbml.name)
+#     report = validate_sbml_model(filename = f_sbml.name)
 
-pprint(report)
+# pprint(report)
 

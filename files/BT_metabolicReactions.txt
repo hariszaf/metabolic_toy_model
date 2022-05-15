@@ -1,0 +1,24 @@
+ID (BIGG)	ID (SEED)	name	Reaction	exchange	SEED link	Notes
+GLCt2r	rxn05573	D-glucose transport in via proton symport	D-Glucose[1] + H+[1] <=> D-Glucose + H+	D-Glucose[1]	https://modelseed.org/biochem/reactions/rxn05573	
+HEX1	rxn00216	ATP:D-glucose 6-phosphotransferase	ATP + D-Glucose => ADP + H+ + D-glucose-6-phosphate		https://modelseed.org/biochem/reactions/rxn00216	
+PGI	rxn00558	D-glucose-6-phosphate aldose-ketose-isomerase	D-glucose-6-phosphate <=> D-fructose-6-phosphate		https://modelseed.org/biochem/reactions/rxn00558	
+PFK	rxn00545	ATP:D-fructose-6-phosphate 1-phosphotransferase	"ATP + D-fructose-6-phosphate => ADP + H+ + D-fructose-1,6-bisphosphate"		https://modelseed.org/biochem/reactions/rxn00545	
+FBA	rxn00786	"D-fructose-1,6-bisphosphate D-glyceraldehyde-3-phosphate-lyase (glycerone-phosphate-forming)"	"D-fructose-1,6-bisphosphate <=> Glycerone-phosphate + Glyceraldehyde3-phosphate"		https://modelseed.org/biochem/reactions/rxn00786	
+TPI	rxn00747	D-glyceraldehyde-3-phosphate aldose-ketose-isomerase	Glyceraldehyde3-phosphate <=> Glycerone-phosphate		https://modelseed.org/biochem/reactions/rxn00747	
+GAPD	rxn00781	D-glyceraldehyde-3-phosphate:NAD+ oxidoreductase (phosphorylating)	"NAD + Phosphate + Glyceraldehyde3-phosphate <=> NADH + H+ + 1,3-Bisphospho-D-glycerate"		https://modelseed.org/biochem/reactions/rxn00781	
+PGK	rxn01100	ATP:3-phospho-D-glycerate 1-phosphotransferase	"ATP + 3-Phosphoglycerate <=> ADP + 1,3-Bisphospho-D-glycerate"		https://modelseed.org/biochem/reactions/rxn01100	
+PGM	rxn01106	"2-Phospho-D-glycerate 2,3-phosphomutase"	2-Phospho-D-glycerate <=> 3-Phosphoglycerate		https://modelseed.org/biochem/reactions/rxn01106	
+ENO	rxn00459	2-phospho-D-glycerate hydro-lyase (phosphoenolpyruvate-forming)	2-Phospho-D-glycerate <=> H2O + Phosphoenolpyruvate		https://modelseed.org/biochem/reactions/rxn00459	
+PYK	rxn00148	ATP:pyruvate 2-O-phosphotransferase	ATP + Pyruvate <=> ADP + Phosphoenolpyruvate + H+		https://modelseed.org/biochem/reactions/rxn00148	
+PPCKr	rxn00247	ATP:oxaloacetate carboxy-lyase (transphosphorylating;phosphoenolpyruvate-forming)	ATP + Oxaloacetate <=> ADP + CO2 + Phosphoenolpyruvate		https://modelseed.org/biochem/reactions/rxn00247	reference of it being reversed in Bacteroides fragilis: https://www.frontiersin.org/articles/10.3389/fmicb.2015.00825/full (PEP carboxykinase); other nice ref: https://www.sciencedirect.com/science/article/pii/S1931312811002952
+MDH	rxn00248	(S)-malate:NAD+ oxidoreductase	NAD + L-Malate <=> NADH + Oxaloacetate + H+		https://modelseed.org/biochem/reactions/rxn00248	
+FUM	rxn00799	(S)-malate hydro-lyase (fumarate-forming)	L-Malate <=> H2O + Fumarate		https://modelseed.org/biochem/reactions/rxn00799	
+FRDx	rxn00284	succinate:NAD+ oxidoreductase	NAD + Succinate <= NADH + H+ + Fumarate		https://modelseed.org/biochem/reactions/rxn00284	"not in the curated model, but supported by: https://pubmed.ncbi.nlm.nih.gov/28049145/, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210497/#B16, https://onlinelibrary.wiley.com/doi/full/10.1046/j.1365-2958.2001.02343.x?sid=nlm%3Apubmed"
+PFL	rxn00157	Acetyl-CoA:formate C-acetyltransferase	Acetyl-CoA + Formate <=> CoA + Pyruvate		https://modelseed.org/biochem/reactions/rxn00157	
+POR_syn	rxn13974	pyruvate:ferredoxin 2-oxidoreductase (CoA-acetylating)	CO2 + Acetyl-CoA + H+ + (2) Reducedferredoxin <= CoA + Pyruvate + (2) Oxidizedferredoxin		https://modelseed.org/biochem/reactions/rxn13974	https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7572596/
+PTAr	rxn00173	acetyl-CoA:phosphate acetyltransferase	Phosphate + Acetyl-CoA <=> CoA + Acetylphosphate		https://modelseed.org/biochem/reactions/rxn00173	
+ACKr	rxn00225	ATP:acetate phosphotransferase	ATP + Acetate <=> ADP + Acetylphosphate		https://modelseed.org/biochem/reactions/rxn00225	
+LDH_L	rxn00499	(S)-Lactate:NAD+ oxidoreductase	NAD + L-Lactate <=> NADH + Pyruvate + H+		https://modelseed.org/biochem/reactions/rxn00499	
+RNF		Ferredoxin:NAD oxidoreductase ( 2 protons traslocation)	(3)H+ + NAD + (2) Reduced-ferredoxins <=> NADH + (2) H+[1] + (2) Oxidized-ferredoxins		http://bigg.ucsd.edu/universal/reactions/RNF	not in found in mSEED
+biomass		mock objective	(2) Acetyl-CoA + (3) ATP + (2) NADH + (2) H+ => Biomass + (3) ADP + (2) NAD + (2) CoA			
+	rxn05654  	"Transport of succinate, extracellular"	Succinate + H+[1] <=> Succinate + H+	Succinate	https://modelseed.org/biochem/reactions/rxn05654	
