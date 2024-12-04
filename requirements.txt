@@ -1,0 +1,25 @@
+# Notebook and scripts 
+cobra==0.23.0
+matplotlib==3.8.4
+numpy==1.23.4
+openpyxl==3.1.0
+plotly==5.22.0
+scipy==1.14.1
+
+# Jupyter
+pexpect==4.9.0
+jinja2
+tornado>=6.1
+pyzmq>=17
+argon2-cffi
+traitlets>=4.2.1
+jupyter-core>=4.6.1
+jupyter-client>=5.3.4
+ipython-genutils
+nbformat
+nbconvert>=5
+nest-asyncio>=1.5
+ipykernel
+Send2Trash>=1.8.0
+terminado>=0.8.3
+prometheus-client

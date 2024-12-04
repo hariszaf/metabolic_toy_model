@@ -20,7 +20,6 @@ compounds_helper.saveAliases(compounds_aliases_dict)
 # compounds_names_dict = compounds_helper.loadNames()
 # compounds_helper.saveNames(compounds_names_dict)
 
-
 reactions_helper = Reactions()
 reactions_dict = reactions_helper.loadReactions()
 reactions_aliases_dict = reactions_helper.loadMSAliases()
@@ -33,7 +32,7 @@ def creatMetObj(seedID, compartment):
         cid = seedID + '_e'
     else:
         cid = seedID + '_c'
-    
+
     met = Metabolite(cid)
     met.formula = compounds_dict[seedID]['formula']
     met.name = compounds_dict[seedID]['name']
@@ -52,8 +51,8 @@ def getMetabolites(reactionList):
             else:
                 cpd = creatMetObj(m[1], 'c')
                 modelMets[cpd.id] = cpd.copy()
-    return modelMets         
-    
+    return modelMets
+
 def getModelReactions(reactionsList):
     reactions = []
     modelMets = getMetabolites(reactionsList)
@@ -70,9 +69,8 @@ def getModelReactions(reactionsList):
         if reactions_dict[reac]['reversibility'] == '=':
             R.lower_bound = -1000
         R.upper_bound = 1000
-        
+
         reactions.append(R.copy())
-    
+
     return reactions
-        
-        
+

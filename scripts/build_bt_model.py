@@ -3,28 +3,34 @@
 Created on Fri May 13 13:40:58 2022
 
 @author: u0139894
+
+Edited on Dec 2024
+by: Haris Zafeiropoulos
 """
+# Allow running from any path
+import os, sys
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(script_dir, ".."))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
-from getModelReactions import *
 from cobra import Model
+from getModelReactions import *
+from utils import get_root_dir_from_script, makeSink, get_reactions_from_tsv
 
-def makeSink(r_id, metabolite):
-    sink = Reaction(r_id)
-    sink.lower_bound = -1000
-    sink.upper_bound = 1000
-    sink.add_metabolites({metabolite:-1})
-    return sink
+root_path = get_root_dir_from_script()
+
+# ------------  PART TO EDIT DURING THE CLASS  ---------------------
+
+# Change the name of the file that the model will be saved if you like!
+modelFileName = 'sugar_fermenter_toy_model.xml'
 
 
-modelOutput = 'C:\\Users\\u0139894\\Documents\\GitHub\\metabolic_toy_model\\files\\models\\sugar_fermenter_toy_model.xml'
-reactions = []
-with open('C:\\Users\\u0139894\\Documents\\GitHub\\metabolic_toy_model\\files\\BT_metabolicReactions.txt') as f:
-    f.readline()
-    for line in f:
-        a = line.strip().split('\t')
-        if 'rxn' in a[1]:
-            reactions.append(a[1])
+# ------------  PART TO EDIT DURING THE CLASS  ---------------------
 
+modelOutput = os.path.join(root_path, 'files', 'models', modelFileName)
+path_to_reactions_file = os.path.join(root_path, 'files', 'BT_metabolicReactions.txt')
+reactions = get_reactions_from_tsv(path_to_reactions_file)
 modelReactions = getModelReactions(reactions)
 
 model = Model("sugar_fermenter")
@@ -68,6 +74,8 @@ prot_e = model.metabolites.cpd00067_e.copy()
 protEX = makeSink('EX_cpd00067_e', prot_e)
 
 #add the RNF reaction
+# couples the flow of electrons from reduced ferredoxin (fd) to NAD+ with the formation of a sodium gradient
+# across the cytoplasmic membrane (CM).
 prot_e = model.metabolites.cpd00067_e.copy()
 prot_c = model.metabolites.cpd00067_c.copy()
 nad_c = model.metabolites.cpd00003_c.copy()
@@ -91,10 +99,10 @@ biomass = Reaction('biomass')
 biomass.name='Mock biomass function'
 biomass.lower_bound=0
 biomass.upper_bound=1000
-biomass.add_metabolites({atp_c:-3, 
+biomass.add_metabolites({atp_c:-3,
                          accoA_c:-2,
-                         nadh_c:-2, 
-                         prot_c:-2, 
+                         nadh_c:-2,
+                         prot_c:-2,
                          adp_c:3,
                          nad_c:2,
                          coA_c:2
@@ -114,12 +122,17 @@ xSink = makeSink('xSink', model.metabolites.cpd00032_c)
 
 
 #add all new reactions to model
-
 model.add_reactions([gluEX, lacEX, forEX, aceEX, succEX, protEX, rnf, biomass, piSink, h2oSink, xSink, nadSink, nadhSink])
 
 
-
 #############pipe end products to external metabolites#####
+# Remove the cytosol version of a compound "_c" to its exchange one
+"""
+subtract_metabolites:
+The opposite of the `add_metabolites` function, i.e.
+it adds the metabolites with -1*coefficient.
+If the final coefficient for a metabolite is 0 then the metabolite is removed from the reaction.
+"""
 #acetate
 model.reactions.rxn00225.subtract_metabolites({model.metabolites.cpd00029_c:-1})
 model.reactions.rxn00225.add_metabolites({ace_e:-1})
@@ -140,6 +153,7 @@ model.reactions.rxn00157.upper_bound = 0
 model.reactions.rxn00284.subtract_metabolites({model.metabolites.cpd00036_c:-1})
 model.reactions.rxn00284.add_metabolites({succ_e:-1})
 model.reactions.rxn00284.upper_bound = 0
+
 #####################################################################
 model.reactions.rxn13974.lower_bound=-1000
 
@@ -151,7 +165,6 @@ model.reactions.EX_cpd00047_e.lower_bound=0
 model.reactions.EX_cpd00029_e.lower_bound=0
 model.reactions.EX_cpd00036_e.lower_bound=0
 #model.reactions.EX_cpd00067_e.lower_bound = 0
-
 
 
 model.objective = 'biomass'

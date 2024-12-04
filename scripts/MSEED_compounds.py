@@ -9,13 +9,13 @@ import re
 import os
 import json
 from csv import DictReader
-
+from utils import get_root_dir_from_script
 import os
-from pathlib import Path
-path = Path.cwd()
+
+root_path = get_root_dir_from_script()
 
 class Compounds:
-    def __init__(self, biochem_root=os.path.join(path.parent, 'files', 'biochemistry'),
+    def __init__(self, biochem_root=os.path.join(root_path, 'files', 'biochemistry'),
                  cpds_file='compounds.tsv'):
 
         self.BiochemRoot = biochem_root

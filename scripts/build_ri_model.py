@@ -4,27 +4,21 @@ Created on Fri May 13 13:40:58 2022
 
 @author: u0139894
 """
+# Allow running from any path
+import os, sys
+script_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(script_dir, ".."))
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
-from getModelReactions import *
 from cobra import Model
+from getModelReactions import *
+from utils import get_root_dir_from_script, makeSink, get_reactions_from_tsv
 
-def makeSink(r_id, metabolite):
-    sink = Reaction(r_id)
-    sink.lower_bound = -1000
-    sink.upper_bound = 1000
-    sink.add_metabolites({metabolite:-1})
-    return sink
+root_path = get_root_dir_from_script()
+path_to_reactions_file = os.path.join(root_path, 'files', 'RI_metabolicReactions.txt')
 
-
-modelOutput = 'C:\\Users\\u0139894\\Documents\\GitHub\\metabolic_toy_model\\files\\models\\butyrate_producer_toy_model.xml'
-reactions = []
-with open('C:\\Users\\u0139894\\Documents\\GitHub\\metabolic_toy_model\\files\\RI_metabolicReactions.txt') as f:
-    f.readline()
-    for line in f:
-        a = line.strip().split('\t')
-        if 'rxn' in a[1]:
-            reactions.append(a[1])
-
+reactions = get_reactions_from_tsv(path_to_reactions_file)
 modelReactions = getModelReactions(reactions)
 
 model = Model("butyrate_producer")
@@ -76,9 +70,6 @@ btcoA.lower_bound = 0
 btcoA.upper_bound = 1000
 btcoA.add_metabolites({crotonoylcoA:-1, fdox_c:-1, prot_c:-2, nadh_c:-2, butyrylcoA:1, fdrd_c:1, nad_c:2})
 
- 
-
-
 
 
 #add the objective reaction
@@ -91,10 +82,10 @@ biomass = Reaction('biomass')
 biomass.name='Mock biomass function'
 biomass.lower_bound=0
 biomass.upper_bound=1000
-biomass.add_metabolites({atp_c:-3, 
+biomass.add_metabolites({atp_c:-3,
                          accoA_c:-2,
-                         nadh_c:-2, 
-                         prot_c:-2, 
+                         nadh_c:-2,
+                         prot_c:-2,
                          adp_c:3,
                          nad_c:2,
                          coA_c:2
@@ -114,7 +105,7 @@ model.add_reactions([gluEX, lacEX, aceEX, co2EX, h2EX, butEX, protEX, rnf, btcoA
 
 
 #############pipe end products to external metabolites#####
-
+# Remove the cytosol version of a compound "_c" to its exchange one
 
 #lactate
 model.reactions.rxn00499.subtract_metabolites({model.metabolites.cpd00159_c:-1})
@@ -165,4 +156,5 @@ model.reactions.rxn02167.lower_bound=0
 model.objective = 'biomass'
 model.objective.direction = 'max'
 
+modelOutput = os.path.join(root_path, 'files', 'models', 'butyrate_producer_toy_model.xml')
 cobra.io.write_sbml_model(model, modelOutput)

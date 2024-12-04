@@ -4,15 +4,12 @@ import json
 import copy
 import itertools
 from csv import DictReader
+from utils import get_root_dir_from_script
 
-
-import os
-from pathlib import Path
-path = Path.cwd()
-
+root_path = get_root_dir_from_script()
 
 class Reactions:
-    def __init__(self, biochem_root=os.path.join(path.parent, 'files', 'biochemistry'),
+    def __init__(self, biochem_root=os.path.join(root_path, 'files', 'biochemistry'),
                  rxns_file='reactions.tsv'):
 
         self.BiochemRoot = biochem_root
@@ -180,7 +177,7 @@ class Reactions:
 
             # Old code assumed that all "new" compounds were unique
             # cpd_swap_dict = {x:y for x, y in entry}
-            # new_swapped_rxn_cpds = { (x if not x in cpd_swap_dict else cpd_swap_dict[x], c):y 
+            # new_swapped_rxn_cpds = { (x if not x in cpd_swap_dict else cpd_swap_dict[x], c):y
             #                          for (x, c), y in rxn_cpds.items() }
 
             # Regenerate array of cpd dicts for use with generateCode()
@@ -293,10 +290,10 @@ class Reactions:
                 rgt["coefficient"] = int(round(rgt["coefficient"]))
 
             new_rgts_array.append(rgt)
-            
+
             #Trick to exclude reagent if it appears in array more than once
             rgts_dict[rgt["reagent"]]=0
-            
+
 
         return new_rgts_array
 
@@ -305,7 +302,7 @@ class Reactions:
             return "EMPTY"
 
         ########################################
-        # Check that each reagent is either a 
+        # Check that each reagent is either a
         # different compound or in a different
         # compartment, and report.
         ########################################
@@ -321,7 +318,7 @@ class Reactions:
 
         ########################################
         # Check for duplicate compounds in
-        # different compartments, these are 
+        # different compartments, these are
         # balanced directly.
         #######################################
         cpds_coeff_dict = dict()
@@ -346,7 +343,7 @@ class Reactions:
 
         ########################################
         # Check for duplicate elements, across
-        # all compounds, these are balanced 
+        # all compounds, these are balanced
         # directly.
         #######################################
         rxn_net_charge = 0.0
@@ -401,7 +398,7 @@ class Reactions:
             # Correct for redundant ".00" in floats
             if (rxn_net_mass[atom][-3:] == ".00"):
                 rxn_net_mass[atom] = str(int(float(rxn_net_mass[atom])))
-    
+
             imbalanced_atoms_array.append(atom + ":" + rxn_net_mass[atom])
 
         rxn_net_charge = "{0:.2f}".format(rxn_net_charge)
@@ -423,7 +420,7 @@ class Reactions:
 
         if (status == ""):
             status = "OK"
-            
+
         return status
 
     def adjustCompound(self, rxn_cpds_array, compound, adjustment,
