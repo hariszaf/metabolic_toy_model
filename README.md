@@ -18,10 +18,17 @@ You can either clone this repo by:
 
 Or, download it by just clicking on the `Code > Download ZIP`.
 
+Then, from within the root folder of the repo, initiate a `conda` environment and install the required libraries by running:
 
+    conda create -n met_class python=3.10 --no-default-packages
+    conda activate met_class
+    pip install -r requirements
 
+Once everything is set, you may run 
 
+    jupyter-notebook 
 
+and jump into the `msc_class.ipynb` notebook!
 
 
 
