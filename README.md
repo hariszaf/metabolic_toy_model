@@ -22,11 +22,23 @@ Then, from within the root folder of the repo, initiate a `conda` environment an
 
     conda create -n met_class python=3.10 --no-default-packages
     conda activate met_class
-    pip install -r requirements
+
+Please, make sure you have `cmake` and `swig`, depending your OS
+
+- for mac
+    brew install cmake swig
+
+- for linux
+  sudo apt-get install cmake swig
+
+- for windows 
+  
+
+    python3 -m pip install -r requirements.txt
 
 Once everything is set, you may run 
 
-    jupyter-notebook 
+    jupyter notebook 
 
 and jump into the `msc_class.ipynb` notebook!
 
