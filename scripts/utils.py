@@ -30,3 +30,8 @@ def get_reactions_from_tsv(path_to_file):
                 reactions.append(a[1])
     return reactions
 
+
+def apply_environment(model, new_media):
+
+    model.medium = new_media
+    return model
