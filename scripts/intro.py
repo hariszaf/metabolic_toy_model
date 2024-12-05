@@ -18,6 +18,9 @@ import plotly.io as pio
 """
 In this plot, we visualize how the flux space of a system of 3 reactions looks like:
 
+Always give positive flux bounds.
+Relationship makes sense mostly if negative coefficients.
+
 """
 def samples_in_constraint_3D(r1_bounds, r2_bounds, r3_bounds, r3_relationship):
 
@@ -34,8 +37,6 @@ def samples_in_constraint_3D(r1_bounds, r2_bounds, r3_bounds, r3_relationship):
     # Calculate R3_max (the plane) for each (R1, R2) pair
     R3_min = r3_bounds[0]
     R3_max = r3_bounds[1] + r3_relationship[0] * R1 + r3_relationship[1] * R2
-
-    print(R3_max)
 
     # Number of random points to generate
     num_random_points = 5000
@@ -407,6 +408,7 @@ class FluxBalanceAnalysis:
         plt.legend()
         plt.grid()
         plt.show()
+
 
 
 
