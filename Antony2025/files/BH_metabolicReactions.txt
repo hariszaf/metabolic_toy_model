@@ -1,0 +1,29 @@
+ID (BIGG)	ID (SEED)	name	Reaction	SEED link	Notes	
+GLCabc	rxn05147	D-Glucose-ABC transport	H2O + ATP + D-Glucose[1] => ADP + Phosphate + D-Glucose + H+	https://modelseed.org/biochem/reactions/rxn05147		
+HEX1	rxn00216	ATP:D-glucose 6-phosphotransferase	ATP + D-Glucose => ADP + H+ + D-glucose-6-phosphate	https://modelseed.org/biochem/reactions/rxn00216		
+PGI	rxn00558	D-glucose-6-phosphate aldose-ketose-isomerase	D-glucose-6-phosphate <=> D-fructose-6-phosphate	https://modelseed.org/biochem/reactions/rxn00558		
+PFK	rxn00545	ATP:D-fructose-6-phosphate 1-phosphotransferase	"ATP + D-fructose-6-phosphate => ADP + H+ + D-fructose-1,6-bisphosphate"	https://modelseed.org/biochem/reactions/rxn00545		
+FBA	rxn00786	"D-fructose-1,6-bisphosphate D-glyceraldehyde-3-phosphate-lyase (glycerone-phosphate-forming)"	"D-fructose-1,6-bisphosphate <=> Glycerone-phosphate + Glyceraldehyde3-phosphate"	https://modelseed.org/biochem/reactions/rxn00786		
+TPI	rxn00747	D-glyceraldehyde-3-phosphate aldose-ketose-isomerase	Glyceraldehyde3-phosphate <=> Glycerone-phosphate	https://modelseed.org/biochem/reactions/rxn00747		
+GAPD	rxn00781	D-glyceraldehyde-3-phosphate:NAD+ oxidoreductase (phosphorylating)	"NAD + Phosphate + Glyceraldehyde3-phosphate <=> NADH + H+ + 1,3-Bisphospho-D-glycerate"	https://modelseed.org/biochem/reactions/rxn00781		
+PGK	rxn01100	ATP:3-phospho-D-glycerate 1-phosphotransferase	"ATP + 3-Phosphoglycerate <=> ADP + 1,3-Bisphospho-D-glycerate"	https://modelseed.org/biochem/reactions/rxn01100		
+PGM	rxn01106	"2-Phospho-D-glycerate 2,3-phosphomutase"	2-Phospho-D-glycerate <=> 3-Phosphoglycerate	https://modelseed.org/biochem/reactions/rxn01106		
+ENO	rxn00459	2-phospho-D-glycerate hydro-lyase (phosphoenolpyruvate-forming)	2-Phospho-D-glycerate <=> H2O + Phosphoenolpyruvate	https://modelseed.org/biochem/reactions/rxn00459		
+PYK	rxn00148	ATP:pyruvate 2-O-phosphotransferase	ATP + Pyruvate <=> ADP + Phosphoenolpyruvate + H+	https://modelseed.org/biochem/reactions/rxn00148		
+POR4	rxn05938	pyruvate ferredoxin oxidoreductase	CO2 + Acetyl-CoA + H+ + Reducedferredoxin <= CoA + Pyruvate + Oxidizedferredoxin	https://modelseed.org/biochem/reactions/rxn05938		
+PTAr	rxn00173	acetyl-CoA:phosphate acetyltransferase	Phosphate + Acetyl-CoA <=> CoA + Acetylphosphate		https://modelseed.org/biochem/reactions/rxn00173	
+ACKr	rxn00225	ATP:acetate phosphotransferase	ATP + Acetate <=> ADP + Acetylphosphate		https://modelseed.org/biochem/reactions/rxn00225	
+LDH_L	rxn00499	(S)-Lactate:NAD+ oxidoreductase	NAD + L-Lactate <=> NADH + Pyruvate + H+	https://modelseed.org/biochem/reactions/rxn00499		
+FTHFL	rxn00690	Formate:tetrahydrofolate ligase (ADP-forming)	ATP + Formate + Tetrahydrofolate <=> ADP + Phosphate + 10-Formyltetrahydrofolate	https://modelseed.org/biochem/reactions/rxn00690		
+MTHFC	rxn01211	"5,10-Methenyltetrahydrofolate 5-hydrolase (decyclizing)"	H2O + 5-10-Methenyltetrahydrofolate <= H+ + 10-Formyltetrahydrofolate	https://modelseed.org/biochem/reactions/rxn01211		
+MTHFD	rxn00906	"5,10-methylenetetrahydrofolate:NAD+ oxidoreductase"	NAD + 5-10-Methylenetetrahydrofolate <=> NADH + 5-10-Methenyltetrahydrofolate	https://modelseed.org/biochem/reactions/rxn00906		
+MTHFR2	rxn04954	5-methyltetrahydrofolate:NAD+ oxidoreductase	NAD + 5-Methyltetrahydrofolate <=> NADH + H+ + 5-10-Methylenetetrahydrofolate	https://modelseed.org/biochem/reactions/rxn04954		
+METR	rxn06149	5-Methyltetrahydrofolate:Corrinoid Co-methyltransferase	H+ + 5-Methyltetrahydrofolate + Corrinoid <=> Tetrahydrofolate + Methylcorrinoid	https://modelseed.org/biochem/reactions/rxn06149		
+CODH_ACS	rxn39948	CODH/Acetyl-CoA synthase (Wood-Ljundahl)	CoA + CO2 + H+ + Reducedferredoxin + Methylcorrinoid <=> H2O + Acetyl-CoA + Oxidizedferredoxin + Corrinoid	https://modelseed.org/biochem/reactions/rxn39948		
+RNF		Ferredoxin:NAD oxidoreductase ( 2 protons traslocation)	(3)H+ + NAD + (2) Reduced-ferredoxins ? NADH + (2) H+[1] + (2) Oxidized-ferredoxins	http://bigg.ucsd.edu/universal/reactions/RNF	not in found in mSEED	
+R11818		"	
+formate:NAD+, ferredoxin oxidoreductase"	"	
+2 Formate + NAD+ + 2 Oxidized ferredoxin <=> 2 CO2 + NADH + H+ + 2 Reduced ferredoxin"	https://www.kegg.jp/entry/R11818	not in found in mSEED	
+HYDFDi	rxn45849	Ferredoxin hydrogenase	H2 + (2) Oxidized-ferredoxins <=> (2) H+ + (2) Reduced-ferredoxins	https://modelseed.org/biochem/reactions/rxn45849		
+ATPS4	rxn08173	F(1)-ATPase	ADP + Phosphate + (4) H+[1] => H2O + ATP + (3) H+	https://modelseed.org/biochem/reactions/rxn08173		
+		mock objective	(2) Acetyl-CoA + (3) ATP + (2) NADH + (2) H+ => Biomass + (3) ADP + (2) NAD + (2) CoA			
