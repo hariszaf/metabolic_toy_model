@@ -1,0 +1,10 @@
+gurobipy
+cobra
+dnngior
+ModelSEEDpy
+taxoniq
+scipy
+matplotlib
+plotly
+pyrodigal
+biopython

@@ -11,29 +11,37 @@ Some concepts of CBA will be covered too.
 
 You can either clone this repo by: 
 
-    ```bash
-    git clone https://github.com/hariszaf/metabolic_toy_model.git
-    cd metabolic_toy_model
-    ```
+```bash
+git clone https://github.com/hariszaf/metabolic_toy_model.git
+cd metabolic_toy_model
+```
 
 Or, download it by just clicking on the `Code > Download ZIP`.
+Then, unzip the file you downloaded; you can rename it, in case you notice is called somehow else to 
 
 Then, from within the root folder of the repo, initiate a `conda` environment and install the required libraries by running:
 
     conda create -n met_class python=3.10 --no-default-packages
     conda activate met_class
 
-Make sure you have `cmake`. If not already available, depending on your OS, run the following to get it:
+Make sure you have `cmake`. 
+If not already available, depending on your OS, run the following to get it:
 
 - for **macOS**
   
-    brew install cmake
+    brew install cmake 
+    brew install swig
 
 - for **Linux**
 
-  sudo apt-get install cmake
+  sudo apt-get install cmake 
+  sudo apt-get install swig
 
 - In case of Windows I guess you are using a Linux a Windows Subsystem for Linux (WSL) or something similar, so it would be as the Linux case. 
+
+
+> In some cases, you may need to also install `swig`
+
 
 Once you make sure `cmake` is there, you may run:
 

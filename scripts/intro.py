@@ -4,10 +4,9 @@ Introduction class in metabolic modeling
 Autor: Haris Zafeiropoulos
 Date: Dec 2024
 """
-import os
 import numpy as np
+import scipy
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import plotly.io as pio
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -414,7 +413,9 @@ class FluxBalanceAnalysis:
 
 if __name__ == "__main__":
 
+    # ----------------------------------
     # Example Use of FluxBalanceAnalysis
+    # ----------------------------------
 
     # Stoichiometric matrix for a single reaction: A -> B, constraints are -v1 + v2 = 0
     S = np.array([[1, -1]])
@@ -435,11 +436,9 @@ if __name__ == "__main__":
     # Visualize the geometry
     fba.visualize_geometry()
 
-
-
-
-
+    # ----------------------------------
     # Example Usage FluxBalanceAnalysis3D
+    # ----------------------------------
 
     # Stoichiometric matrix for a single reaction: A + B -> C
     S = np.array([[1, 1, -1]])  # A + B -> C
@@ -461,4 +460,18 @@ if __name__ == "__main__":
     fba.visualize_geometry_3d()
 
 
+    # ----------------------------------
+    # Example of constrain_plane_in_3D()
+    # ----------------------------------
+    constrain_plane_in_3D()
+
+    # ----------------------------------
+    # Example of samples_3D_constraint
+    # ----------------------------------
+    samples_in_constraint_3D(
+        r1_bounds = [5, 10],
+        r2_bounds = [5, 10],
+        r3_bounds = [0,  40],
+        r3_relationship = [-1, -1]
+    )
 
