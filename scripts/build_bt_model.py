@@ -36,6 +36,9 @@ modelReactions = getModelReactions(reactions)
 model = Model("sugar_fermenter")
 model.add_reactions(modelReactions)
 
+print(model.reactions)
+print(len(model.reactions))
+sys.exit(0)
 ##############add external metabolites########
 
 #lactate
@@ -122,7 +125,21 @@ xSink = makeSink('xSink', model.metabolites.cpd00032_c)
 
 
 #add all new reactions to model
-model.add_reactions([gluEX, lacEX, forEX, aceEX, succEX, protEX, rnf, biomass, piSink, h2oSink, xSink, nadSink, nadhSink])
+model.add_reactions([
+    gluEX,
+    lacEX,
+    forEX,
+    aceEX,
+    succEX,
+    protEX,
+    rnf,
+    biomass,
+    piSink,
+    h2oSink,
+    xSink,
+    nadSink,
+    nadhSink
+])
 
 
 #############pipe end products to external metabolites#####
