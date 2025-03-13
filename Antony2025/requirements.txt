@@ -11,3 +11,5 @@ biopython
 ipywidgets
 nbformat
 kaleido
+gdown
+seaborn
