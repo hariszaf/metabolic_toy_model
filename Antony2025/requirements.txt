@@ -1,0 +1,15 @@
+gurobipy
+cobra
+dnngior
+ModelSEEDpy
+taxoniq
+scipy
+matplotlib
+plotly
+pyrodigal
+biopython
+ipywidgets
+nbformat
+kaleido
+gdown
+seaborn

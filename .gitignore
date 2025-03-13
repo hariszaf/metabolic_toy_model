@@ -4,3 +4,8 @@ __pycache__/
 one_per_phylum_models/
 shewanella_models/
 
+comets_linux/
+comets_linux*
+.current_*
+*.cmd
+COMETS_manifest.txt
