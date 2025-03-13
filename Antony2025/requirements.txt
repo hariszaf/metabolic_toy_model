@@ -10,3 +10,4 @@ pyrodigal
 biopython
 ipywidgets
 nbformat
+kaleido
