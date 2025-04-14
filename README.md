@@ -7,46 +7,42 @@ some typical methods for their constraint-based analysis (CBA).
 
 Some concepts of CBA will be covered too. 
 
+
+## Agenda
+
+|    Time     |                           Description                            |
+|:-----------:|:----------------------------------------------------------------:|
+| 10:00-11:00 | From a genome to a Genome Scale Metabolic Reconstruction (GENRE)  [[slides](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/edit?usp=sharing) \| [notebook](./Antony2025/reconstructingDraftGSMMs.ipynb)] |
+| 11:05-12:00 | From a GENRE to a Genome Scale Model (GEM) [[slides]() \| [notebook]()] |
+| 12:05-13:30 | Introduction `cobrapy`  [ [notebook](./Antony2025/introductionToCOBRApy.ipynb)] |
+| 13:30-14:30 | Lunch break                                                      |
+| 14:30-15:30 | Flux Balance Analysis (FBA)   [ [notebook](./Antony2025/computationalMethods.ipynb#)] |
+| 15:35-16:30 | Flux Variability Analysis (FVA) & Flux Sampling    [ [notebook]()] |
+| 16:35-18:00 | Metabolic modeling applications  [ [list of cool papers]()] |
+
+
+The agenda is indicative and it will be shapes in real-time based on how we deal with the metabolic modeling challenges. :rocket:
+
+
 ## How to work with this repo 
 
 You can either clone this repo by: 
 
-    ```{bash}
+
     git clone https://github.com/hariszaf/metabolic_toy_model.git
     cd metabolic_toy_model
-    ```
 
-Or, download it by just clicking on the `Code > Download ZIP`.
+and jump to the `duth` branch:
 
-Then, from within the root folder of the repo, initiate a `conda` environment and install the required libraries by running:
-
-    conda create -n met_class python=3.10 --no-default-packages
-    conda activate met_class
-
-Make sure you have `cmake`. If not already available, depending on your OS, run the following to get it:
-
-- for **macOS**
-  
-    brew install cmake
-
-- for **Linux**
-
-  sudo apt-get install cmake
-
-- In case of Windows I guess you are using a Linux a Windows Subsystem for Linux (WSL) or something similar, so it would be as the Linux case. 
-
-Once you make sure `cmake` is there, you may run:
-
-    python3 -m pip install -r requirements.txt
+    git checkout duth
 
 
-Once everything is set, you may run:
-
-    jupyter notebook 
-
-and jump into the `msc_class.ipynb` notebook!
+**or**, you can fire a [codespace](https://github.com/features/codespaces). 
 
 
-For any trouble, feel free to contact [Haris](mailto:haris.zafeiropoulos@kuleuven.be) directly.
+> In both cases, you may follow the instructions you will find in the [`pre_env.ipynb`](./prep_env.ipynb) notebook!
+
+
+For any issue or quesion of yours, feel free to contact [Haris](mailto:haris.zafeiropoulos@kuleuven.be).
 
 
