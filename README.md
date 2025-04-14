@@ -1,4 +1,4 @@
-# Intro in metabolic modeling
+# Introduction in metabolic modeling
 
 ## Topics to be discussed
 
@@ -11,7 +11,7 @@ Some concepts of CBA will be covered too.
 
 You can either clone this repo by: 
 
-    ```bash
+    ```{bash}
     git clone https://github.com/hariszaf/metabolic_toy_model.git
     cd metabolic_toy_model
     ```
