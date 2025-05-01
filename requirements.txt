@@ -7,6 +7,8 @@ ModelSEEDpy==0.4.2
 openpyxl==3.1.0
 matplotlib==3.8.4
 plotly==5.22.0
+taxoniq==1.0.3
+
 
 # Jupyter
 jupyter==1.0.0
