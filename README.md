@@ -13,8 +13,8 @@ Some concepts of CBA will be covered too.
 |    Time     |                           Description                            |
 |:-----------:|:----------------------------------------------------------------:|
 | 10:00-11:00 | From a genome to a draft Genome Scale Metabolic Reconstruction (GENRE)  [[slides](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/edit?usp=sharing) \| [notebook](./Antony2025/reconstructingDraftGSMMs.ipynb)] |
-| 11:05-12:00 | From a GENRE to a Genome Scale Model (GEM) [[slides]() \| [notebook]()] |
-| 12:05-13:30 | Introduction `cobrapy`  [ [notebook](./Antony2025/introductionToCOBRApy.ipynb)] |
+| 11:05-12:30 | Introduction `cobrapy`  [ [notebook](./Antony2025/introductionToCOBRApy.ipynb)] |
+| 12:35-13:30 | From a GENRE to a Genome Scale Model (GEM) [[slides](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/view#slide=id.g352c3d09db5_1_13) \| [notebook]()] |
 | 13:30-14:30 | Lunch break                                                      |
 | 14:30-15:30 | Flux Balance Analysis (FBA)   [ [notebook](./Antony2025/computationalMethods.ipynb#FBA)] |
 | 15:35-16:30 | Flux Variability Analysis (FVA) & Flux Sampling    [ [notebook]()] |
