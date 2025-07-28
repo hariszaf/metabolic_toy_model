@@ -24,11 +24,10 @@ or clone the repo locally and build a `conda` environment as described in the co
 
 For example:
 
-    ```bash
     git clone https://github.com/hariszaf/metabolic_toy_model.git
     cd metabolic_toy_model
     git checkout duth
-    ```
+
 Now, you could follow the instructions on [prep_env.ipynb](https://github.com/hariszaf/metabolic_toy_model/blob/duth/prep_env.ipynb) for how to build your local `conda` environment.
 
 Since each branch has its own goals, it also comes with its own set of requirements.
