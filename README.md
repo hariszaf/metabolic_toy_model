@@ -1,52 +1,21 @@
-# Introduction in metabolic modeling
+# Sampling from the Solution Space of Genome-Scale Metabolic Models
 
-## Topics to be discussed
+In this repo, we provide implementations on the flux sampling guidelines and best practices we describe on 
+our chapter on the *“Flux Balance Analysis”* book, in the protocol series Methods in Molecular Biology, by Springer Nature.
 
-We will cover some first topics regarding the metabolic modeling reconstruction and
-some typical methods for their constraint-based analysis (CBA). 
+This repository provides implementations of the flux sampling guidelines and best practices described in our chapter on _“Flux Balance Analysis”_, 
+to be published in the [Methods in Molecular Biology protocol series](https://link.springer.com/series/7651) by Springer Nature.
 
-Some concepts of CBA will be covered too. 
+We discuss flux sampling implementation under different scenarions and highlight some of its challenges. 
+We apply sampling both within the cell, making use of the [`dingo`](https://github.com/geomScale/dingo) Python library [^1], and on the extracellular space, using the [MAMBO](./scripts/mambo.py) approach[^2]. 
 
-## How to work with this repo 
-
-You can either clone this repo by: 
-
-    ```{bash}
-    git clone https://github.com/hariszaf/metabolic_toy_model.git
-    cd metabolic_toy_model
-    ```
-
-Or, download it by just clicking on the `Code > Download ZIP`.
-
-Then, from within the root folder of the repo, initiate a `conda` environment and install the required libraries by running:
-
-    conda create -n met_class python=3.10 --no-default-packages
-    conda activate met_class
-
-Make sure you have `cmake`. If not already available, depending on your OS, run the following to get it:
-
-- for **macOS**
-  
-    brew install cmake
-
-- for **Linux**
-
-  sudo apt-get install cmake
-
-- In case of Windows I guess you are using a Linux a Windows Subsystem for Linux (WSL) or something similar, so it would be as the Linux case. 
-
-Once you make sure `cmake` is there, you may run:
-
-    python3 -m pip install -r requirements.txt
-
-
-Once everything is set, you may run:
-
-    jupyter notebook 
-
-and jump into the `msc_class.ipynb` notebook!
 
 
 For any trouble, feel free to contact [Haris](mailto:haris.zafeiropoulos@kuleuven.be) directly.
 
+
+## References
+[^1]: Apostolos Chalkis, Vissarion Fisikopoulos, Elias Tsigaridas, Haris Zafeiropoulos, dingo: a Python package for metabolic flux sampling, Bioinformatics Advances, Volume 4, Issue 1, 2024, vbae037, https://doi.org/10.1093/bioadv/vbae037
+
+[^2]: Garza, D.R., van Verk, M.C., Huynen, M.A. et al. Towards predicting the environmental metabolome from metagenomics with a mechanistic model. Nat Microbiol 3, 456–460 (2018). https://doi.org/10.1038/s41564-018-0124-8
 
