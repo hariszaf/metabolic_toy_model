@@ -3,3 +3,6 @@ Cython==0.29.37
 numpy==1.26.4
 dingo_walk==0.1.6
 
+
+# community model
+pycomo==0.2.8
