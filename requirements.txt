@@ -1,3 +1,11 @@
+#cobrapy
+cobra
+
+#general
+pandas
+seaborn
+matplotlib
+
 # dingo
 Cython==0.29.37
 numpy==1.26.4
