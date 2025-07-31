@@ -6,7 +6,7 @@ our chapter on the *“Flux Balance Analysis”* book, in the protocol series Me
 This repository provides implementations of the flux sampling guidelines and best practices described in our chapter on _“Flux Balance Analysis”_, 
 to be published in the [Methods in Molecular Biology protocol series](https://link.springer.com/series/7651) by Springer Nature.
 
-We discuss flux sampling implementation under different scenarions and highlight some of its challenges. 
+We discuss flux sampling implementation under different scenarios and highlight some of its challenges. 
 We apply sampling both within the cell, making use of the [`dingo`](https://github.com/geomScale/dingo) Python library [^1], and on the extracellular space, using the [MAMBO](./scripts/mambo.py) approach[^2]. 
 
 For any trouble, feel free to [open an issue](https://github.com/hariszaf/metabolic_toy_model/issues) specifying that you are using the `sampling` branch of this repo.
