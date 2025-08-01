@@ -53,7 +53,7 @@ def current_solution(modelList, media):
 def MCMC(media, modelList, rab):
     m2 = media.copy()
     ch = np.random.choice(list(media))
-    m2[ch]= max(0, m2[ch] + np.random.uniform(low=-0.5, high=0.5))
+    m2[ch]= max(0, m2[ch] + np.random.uniform(low=-5, high=5))
     sol_current = current_solution(modelList, media)
     sol_candidate = current_solution(modelList, m2)
 

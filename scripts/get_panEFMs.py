@@ -10,7 +10,7 @@ import cobra
 import numpy as np
 
 
-
+import pandas as pd
 
 
 from envBallScripts import *
@@ -92,4 +92,28 @@ def get_panEFM_dist(modelPath, reactions, env_dict, max_it=1000):
         panEFM=get_panEFM(map_d, rc, modelPath, 0.01)
         all_iters.append(panEFM)
     return all_iters
-        
+
+def plot_reaction_freq_heatmap(frequency_df, output_path=None, figsize=(12, 8), cmap="Greys"):
+    
+    # Sort reactions (columns) by average frequency
+    sorted_cols = frequency_df.mean(axis=0).sort_values(ascending=False).index
+    data = frequency_df[sorted_cols]
+
+    plt.figure(figsize=figsize)
+    sns.heatmap(data,
+                cmap=cmap,
+                cbar_kws={'label': 'Reaction frequency'},
+                xticklabels=False,
+                yticklabels=True,
+                vmin=0, vmax=1,
+                linewidths=0.1, linecolor='lightgray')
+
+    plt.xlabel("Reactions (sorted by frequency)")
+    plt.ylabel("Environments")
+    plt.title("Pan-EFM Reaction Frequencies")
+    plt.tight_layout()
+
+    if output_path is not None:
+        plt.savefig(output_path, dpi=300)
+    plt.show()
+
