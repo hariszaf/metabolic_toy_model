@@ -1,5 +1,23 @@
+from pathlib import Path
+import os
+
+import numpy as np
+import pandas as pd
+
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 import numpy as np
 import scipy.stats as sts
+
+import cobra
+from cobra import Model, Reaction
+cobra_config = cobra.Configuration()
+cobra_config.solver = "glpk_exact"
+
+def get_exchange_metabolites(model):
+    return set([i.id for i in model.exchanges if i.id != 'EX_biomass(e)'])
 
 def apply_environment(mdl, media_dict):
     for i in media_dict:
@@ -50,10 +68,10 @@ def current_solution(modelList, media):
     return sol
 
 
-def MCMC(media, modelList, rab):
+def MCMC(media, modelList, rab, delta = 0.5):
     m2 = media.copy()
     ch = np.random.choice(list(media))
-    m2[ch]= max(0, m2[ch] + np.random.uniform(low=-5, high=5))
+    m2[ch]= max(0, m2[ch] + np.random.uniform(low=-delta, high=delta))
     sol_current = current_solution(modelList, media)
     sol_candidate = current_solution(modelList, m2)
 
@@ -75,3 +93,33 @@ def bunching(vec):
         p0 = (p0 + vec[i])/2
 
     return p0
+
+
+def plot_mambo_results(result, cor_sorter, output_path=None, figsize=(12, 6), cmap='coolwarm'):
+    
+    fig, ax1 = plt.subplots(figsize=figsize)
+
+    # Plot pcolormesh of media matrix
+    c = ax1.pcolormesh(result, cmap=cmap, shading='auto')
+    ax1.set_ylabel("Metabolites (media components)")
+    ax1.set_xlabel("MCMC Samples (sorted by correlation)")
+    ax1.set_title("Sorted MAMBO Media vs. Correlation with Composition")
+
+    # Add colorbar for media intensities
+    cbar = plt.colorbar(c, ax=ax1)
+    cbar.set_label("Media concentration")
+
+    # Plot overlayed correlation line
+    ax2 = ax1.twinx()
+    ax2.plot(cor_sorter, color='black', linewidth=2.5, label='Pearson correlation with target')
+    ax2.set_ylabel("")
+    ax2.set_ylim(-1, 1)
+
+    # Optional: legend for the line
+    ax2.legend(loc='upper right')
+
+    plt.tight_layout()
+    
+    if output_path:
+        plt.savefig(output_path, dpi=300)
+    plt.show()

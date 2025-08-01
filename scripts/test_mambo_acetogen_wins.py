@@ -6,7 +6,6 @@ Created on Fri Aug  1 13:36:18 2025
 """
 
 from mambo import *
-from envBallScripts import *
 
 
 
@@ -39,8 +38,9 @@ acetogen.optimize()
 sugar_fermenter.optimize()
 butyrate_producer.optimize()
 
+#order is critical
+modelList = [acetogen, sugar_fermenter, butyrate_producer]
 
-modelList = [sugar_fermenter, butyrate_producer, acetogen]
 
 # #####Composition Vector####
 composition = np.array([10, 1, 0.1])
@@ -51,7 +51,7 @@ solutions = [current_solution(modelList, media)]
 for i in range(5000):#should be much larger
 
     print(i)
-    solution, media = MCMC(media, modelList, composition)
+    solution, media = MCMC(media, modelList, composition, delta = 1)
 
     if (i>10):#should be much larger
 
@@ -80,8 +80,23 @@ cor = np.array([sts.pearsonr(i, composition)[0] for i in solutions.T])
 print(cor)
 
 
-avM = np.median(medias.T[cor>0.6], axis=0)
+avM = np.median(medias.T[cor>max(cor)*0.99], axis=0)
 avM = (avM/max(avM))*10
 m = {list(media.keys())[i]: avM[i] for i in range(len(avM))}
 
 print(f"composition was {composition} \t MAMBO solution was: {current_solution(modelList, m)}")
+
+
+sorter = np.argsort(cor)
+
+result = medias.T[sorter].T
+cor_sorted = cor[sorter]
+
+results_folder = root_dir / 'results' / 'mambo'
+os.makedirs(results_folder, exist_ok=True)
+
+output_path = results_folder / 'mambo_acetogenWins.png'
+
+plot_mambo_results(result, cor_sorted, output_path=output_path)
+
+

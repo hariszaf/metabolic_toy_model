@@ -11,7 +11,7 @@ import numpy as np
 
 
 import pandas as pd
-
+import seaborn as sns
 
 from envBallScripts import *
 from tqdm import tqdm
@@ -93,27 +93,31 @@ def get_panEFM_dist(modelPath, reactions, env_dict, max_it=1000):
         all_iters.append(panEFM)
     return all_iters
 
-def plot_reaction_freq_heatmap(frequency_df, output_path=None, figsize=(12, 8), cmap="Greys"):
-    
-    # Sort reactions (columns) by average frequency
+def plot_reaction_freq_heatmap(frequency_df,
+                               output_path=None,
+                               figsize=(12, 8),
+                               cmap="viridis"):
+    # sort reactions by mean frequency
     sorted_cols = frequency_df.mean(axis=0).sort_values(ascending=False).index
     data = frequency_df[sorted_cols]
 
     plt.figure(figsize=figsize)
-    sns.heatmap(data,
-                cmap=cmap,
-                cbar_kws={'label': 'Reaction frequency'},
-                xticklabels=False,
-                yticklabels=True,
-                vmin=0, vmax=1,
-                linewidths=0.1, linecolor='lightgray')
+    ax = sns.heatmap(
+        data,
+        cmap=cmap,
+        cbar_kws={'label': 'Reaction frequency'},
+        xticklabels=False,
+        yticklabels=True
+    )
 
-    plt.xlabel("Reactions (sorted by frequency)")
-    plt.ylabel("Environments")
-    plt.title("Pan-EFM Reaction Frequencies")
+    ax.set_xlabel("Reactions (sorted by frequency)")
+    ax.set_ylabel("Environments")
+    ax.set_title("Pan-EFM Reaction Frequencies")
     plt.tight_layout()
 
-    if output_path is not None:
+    if output_path:
         plt.savefig(output_path, dpi=300)
     plt.show()
+
+
 

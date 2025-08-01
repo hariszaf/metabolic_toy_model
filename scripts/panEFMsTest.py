@@ -46,5 +46,5 @@ frequency_df = pd.DataFrame({
 results_folder = root_dir / 'results' / 'pan_efms'
 os.makedirs(results_folder, exist_ok=True)
 
-
-plot_reaction_freq_heatmap(frequency_df, output_path=results_folder, figsize=(12, 8), cmap="Greys")
+output_path = results_folder / 'pan_efms_dist.png'
+plot_reaction_freq_heatmap(frequency_df, output_path=output_path, figsize=(12, 8), cmap="coolwarm")
