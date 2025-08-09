@@ -11,3 +11,6 @@ comets_linux*
 .current_*
 *.cmd
 COMETS_manifest.txt
+
+*.pkl
+*.pickle
