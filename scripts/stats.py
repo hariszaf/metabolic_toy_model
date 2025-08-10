@@ -13,37 +13,49 @@ from statsmodels.stats.multitest import multipletests
 
 
 # Apply PCA analysis on a samples dataset
-def pca_samples(samples):
+def pca_samples(samples, n_components=10, plots=False):
     """
     samples (pd.DataFrame) -- a df with samples as rows and reactions as column names
     """
 
     # Perform PCA
-    pca        = PCA(n_components=10)  # You can change the number of components if needed
+    pca        = PCA(n_components=n_components)  # You can change the number of components if needed
     pca_result = pca.fit_transform(samples)
 
     # Explained variance ratio
     explained_variance = pca.explained_variance_ratio_
     print(f"Explained Variance Ratio: {explained_variance}")
 
-    # Plot the first two principal components
-    plt.figure(figsize=(8, 6))
-    plt.scatter(pca_result[:, 0], pca_result[:, 1])
-    plt.xlabel('Principal Component 1')
-    plt.ylabel('Principal Component 2')
-    plt.title('PCA: First Two Principal Components')
-    plt.grid(True)
-    plt.show()
+    if plots:
+        # Plot the first two principal components
+        plt.figure(figsize=(8, 6))
+        plt.scatter(pca_result[:, 0], pca_result[:, 1])
+        plt.xlabel('Principal Component 1')
+        plt.ylabel('Principal Component 2')
+        plt.title('PCA: First Two Principal Components')
+        plt.grid(True)
+        plt.show()
 
-    # Optional: Cumulative explained variance (for how much variance is explained by the first n components)
-    cumulative_variance = np.cumsum(explained_variance)
-    plt.figure(figsize=(8, 6))
-    plt.plot(range(1, len(cumulative_variance) + 1), cumulative_variance, marker='o')
-    plt.xlabel('Number of Components')
-    plt.ylabel('Cumulative Explained Variance')
-    plt.title('Cumulative Explained Variance by PCA Components')
-    plt.grid(True)
-    plt.show()
+        # Optional: Cumulative explained variance (for how much variance is explained by the first n components)
+        cumulative_variance = np.cumsum(explained_variance)
+        plt.figure(figsize=(8, 6))
+        plt.plot(range(1, len(cumulative_variance) + 1), cumulative_variance, marker='o')
+        plt.xlabel('Number of Components')
+        plt.ylabel('Cumulative Explained Variance')
+        plt.title('Cumulative Explained Variance by PCA Components')
+        plt.grid(True)
+        plt.show()
+
+    # --------
+    # Get reactions that contribute the most in each PC
+    model                = PCA(n_components=2).fit(samples)
+    n_pcs                = model.components_.shape[0]
+    most_important       = [np.abs(model.components_[i]).argmax() for i in range(n_pcs)]
+    most_important_names = [samples.columns[most_important[i]] for i in range(n_pcs)]
+
+    dic = {'PC{}'.format(i): most_important_names[i] for i in range(n_pcs)}
+
+    return dic
 
 
 # Function from dingo-stats:
