@@ -1,3 +1,4 @@
+import re
 import umap
 import cobra
 import pandas as pd
@@ -12,6 +13,9 @@ from typing import Tuple, List
 from numpy.typing import NDArray
 from statsmodels.stats.multitest import multipletests
 
+from scipy.stats import spearmanr
+import plotly.express as px
+import plotly.graph_objects as go
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans, DBSCAN
@@ -478,6 +482,11 @@ def tsne_dbscan_grid(X, perplexities=[20, 30, 50], min_samples=5, random_state=4
 
 def rxns_cluster_contribution(samples, labels):
     """
+    Apply Random Forest tests to get feature contribution on each cluster
+
+    Note:
+
+
     samples (pd.DataFraeme)
     labels (np.array)
     """
@@ -516,14 +525,157 @@ def check_samples_range(samples, threshold=0.01):
         if samples[col].min() < -1000 or samples[col].max() > 1000:
             breaking_constraints.append(col)
 
-    non_fixed_fluxes = []
-    for col in samples:
-        if abs(samples[col].min() - samples[col].max()) > threshold:
-            non_fixed_fluxes.append(col)
-
+    non_fixed_fluxes = [
+        col for col in samples if abs(samples[col].min() - samples[col].max()) > threshold
+    ]
     print(
         f"Number of reactions whose bounds failed: {len(breaking_constraints)}\n"
         f"Number of reaction with a non-fixed flux: {len(non_fixed_fluxes)}"
     )
 
     return breaking_constraints, non_fixed_fluxes
+
+    "cpd00530_c0",
+    "cpd00977_c0",
+    "cpd01775_c0"
+
+
+def correlated_reactions(
+    steady_states     : NDArray[np.float64],
+    reactions         : List = [],
+    subsystem         : str = None,
+    linear_coeff      : str = "pearson",
+    linear_corr_cutoff: float = 0.30,
+    indicator_cutoff  : float = 1.2,
+    lower_triangle    : bool = True,
+    label_font_size   : int = 10,
+    outfile           : str = None,
+    width             : int = 900,
+    height            : int = 900
+) -> Tuple:
+    """
+    Correlation matrix for reaction subsystem and according heatmap
+    """
+
+    if indicator_cutoff < 1:
+        raise Exception("Indicator cutoff must be at least equal to 1")
+
+    steady_states = steady_states[reactions].T
+
+    # compute correlation matrix
+    if linear_coeff == "pearson":
+        corr_matrix = np.corrcoef(steady_states, rowvar=True)
+    elif linear_coeff == "spearman":
+        corr_matrix, _ = spearmanr(steady_states, axis=1)
+    else:
+        raise Exception("Input value to linear_coeff parameter is not valid. Choose between pearson or spearman")
+
+    # fill diagonal with 1
+    np.fill_diagonal(corr_matrix, 1)
+
+    # replace not assigned values with 0
+    corr_matrix[np.isnan(corr_matrix)] = 0
+
+    # keep only the lower triangle (with the diagonal) to reduce computational time
+    corr_matrix[np.triu_indices(corr_matrix.shape[0], 1)] = np.nan
+
+    # create a copy of correlation matrix to replace/filter values
+    correlation_matrix = corr_matrix.copy()
+
+    # find indices of correlation matrix where correlation does not occur
+    no_corr_indices = np.argwhere(
+        (correlation_matrix < linear_corr_cutoff) & (correlation_matrix > -linear_corr_cutoff)
+    )
+    # find indices of correlation matrix where correlation does occur
+    corr_indices = np.argwhere(
+        (correlation_matrix > linear_corr_cutoff) | (correlation_matrix < -linear_corr_cutoff)
+    )
+
+    # replace values from the correlation matrix that do not overcome the pearson cutoff with 0
+    for i in range(0, no_corr_indices.shape[1]):
+        index1 = no_corr_indices[i][0]
+        index2 = no_corr_indices[i][1]
+
+        if index1 == index2:
+            continue
+        else:
+            correlation_matrix[index1, index2] = 0
+            correlation_matrix[index2, index1] = 0
+
+    correlations_dictionary = {}
+
+    for i in range(0, corr_indices.shape[1]):
+        index1 = corr_indices[i][0]
+        index2 = corr_indices[i][1]
+
+        if index1 == index2:
+            continue
+
+        else:
+            reaction1 = reactions[index1]
+            reaction2 = reactions[index2]
+
+            pearson = correlation_matrix[index1, index2]
+
+            if pearson > 0:
+                classification =  "positive"
+            elif pearson < 0:
+                classification = "negative"
+
+            correlations_dictionary[reaction1 + "~" + reaction2] = {
+                'pearson': pearson,
+                'jensenshannon': 0,
+                'indicator': 0,
+                'classification': classification
+            }
+
+    # if user does not want to calculate non-linear correlations
+    correlation_matrix[np.triu_indices(correlation_matrix.shape[0], 1)] = np.nan
+    np.fill_diagonal(correlation_matrix, 1)
+
+    if not lower_triangle:
+        # fill the upper triangle and return a square correlation matrix
+        correlation_matrix = np.tril(correlation_matrix) + np.tril(correlation_matrix, -1).T
+
+    # Ensure data is clipped between -1 and +1
+    correlation_matrix = np.clip(correlation_matrix, -1, 1)
+
+    sns_colormap = [
+        [0.0, '#d73027'],   # red for -1
+        [0.5, '#f7f7f7'],   # white for 0
+        [1.0, '#4575b4']    # blue for +1
+    ]
+
+    fig = px.imshow(
+        correlation_matrix,
+        color_continuous_scale = sns_colormap,
+        zmin                   = -1,
+        zmax                   = 1,
+        x                      = reactions,
+        y                      = reactions,
+        origin                 = "upper"
+    )
+
+    fig.update_layout(
+        xaxis        = dict(tickfont=dict(size=label_font_size)),
+        yaxis        = dict(tickfont=dict(size=label_font_size)),
+        # x centers the title
+        title        = dict(text=f"Correlation Matrix of Reactions: {subsystem}", font=dict(size=20), x=0.5),
+        width        = width,
+        height       = height,
+        plot_bgcolor = "rgba(0,0,0,0)"
+    )
+
+    fig.update_traces(xgap=1, ygap=1, hoverongaps=False)
+    fig.show()
+
+    if outfile:
+        outfile = Path(outfile)
+    else:
+        outfile = Path()
+
+    safe_subsystem = re.sub(r'[\\/:"*?<>|]+', "_", subsystem)
+    fig.write_image(outfile / f"cor_heatmap_{safe_subsystem}.eps", scale=3)
+    fig.write_image(outfile / f"cor_heatmap_{safe_subsystem}.png", scale=3, width=1200, height=800)
+
+    return correlation_matrix, correlations_dictionary
