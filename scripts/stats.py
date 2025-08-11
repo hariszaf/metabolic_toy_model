@@ -1,3 +1,4 @@
+import umap
 import cobra
 import pandas as pd
 import numpy as np
@@ -6,45 +7,64 @@ import matplotlib.pyplot as plt
 
 from scipy import stats
 from cobra import Model
+from pathlib import Path
 from typing import Tuple, List
 from numpy.typing import NDArray
-from sklearn.decomposition import PCA
 from statsmodels.stats.multitest import multipletests
+
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans, DBSCAN
+from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
 
 
 # Apply PCA analysis on a samples dataset
-def pca_samples(samples, n_components=10, plots=False):
+def pca_samples(samples, n_components=10, plots=False, outfile=None):
     """
     samples (pd.DataFrame) -- a df with samples as rows and reactions as column names
     """
 
     # Perform PCA
+    X = StandardScaler().fit_transform(samples)
     pca        = PCA(n_components=n_components)  # You can change the number of components if needed
-    pca_result = pca.fit_transform(samples)
+    pca_result = pca.fit_transform(X)
 
     # Explained variance ratio
     explained_variance = pca.explained_variance_ratio_
     print(f"Explained Variance Ratio: {explained_variance}")
 
     if plots:
-        # Plot the first two principal components
-        plt.figure(figsize=(8, 6))
-        plt.scatter(pca_result[:, 0], pca_result[:, 1])
-        plt.xlabel('Principal Component 1')
-        plt.ylabel('Principal Component 2')
-        plt.title('PCA: First Two Principal Components')
-        plt.grid(True)
-        plt.show()
 
-        # Optional: Cumulative explained variance (for how much variance is explained by the first n components)
+        if outfile is None:
+            outfile = Path() / "pca"
+        else:
+            outfile = Path(outfile)
+
+        fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+
+        # First subplot: PCA scatter plot
+        axes[0].scatter(pca_result[:, 0], pca_result[:, 1])
+        axes[0].set_xlabel('Principal Component 1')
+        axes[0].set_ylabel('Principal Component 2')
+        axes[0].set_xlabel(f'PC1 ({explained_variance[0]*100:.2f}% var)')
+        axes[0].set_ylabel(f'PC2 ({explained_variance[1]*100:.2f}% var)')
+        axes[0].set_title('PCA: First Two Principal Components')
+        axes[0].grid(True)
+
+        # Second subplot: cumulative explained variance
         cumulative_variance = np.cumsum(explained_variance)
-        plt.figure(figsize=(8, 6))
-        plt.plot(range(1, len(cumulative_variance) + 1), cumulative_variance, marker='o')
-        plt.xlabel('Number of Components')
-        plt.ylabel('Cumulative Explained Variance')
-        plt.title('Cumulative Explained Variance by PCA Components')
-        plt.grid(True)
-        plt.show()
+        axes[1].plot(range(1, len(cumulative_variance) + 1), cumulative_variance, marker='o')
+        axes[1].set_xlabel('Number of Components')
+        axes[1].set_ylabel('Cumulative Explained Variance')
+        axes[1].set_title('Cumulative Explained Variance by PCA Components')
+        axes[1].grid(True)
+
+        # Save the combined figure
+        plt.tight_layout()
+        plt.savefig(outfile.with_suffix(".eps"), format="eps", dpi=600)
+        plt.savefig(outfile.with_suffix(".png"), format="png", dpi=600)
 
     # --------
     # Get reactions that contribute the most in each PC
@@ -55,7 +75,7 @@ def pca_samples(samples, n_components=10, plots=False):
 
     dic = {'PC{}'.format(i): most_important_names[i] for i in range(n_pcs)}
 
-    return dic
+    return dic, model
 
 
 # Function from dingo-stats:
@@ -149,6 +169,10 @@ def significantly_altered_reactions(
 
 
 def plot_hists(samples, rxn_id, type="dingo", dingo_model=None, description=None, ax=None):
+
+    if ax is None:
+        fig, ax = plt.subplots()
+
     if type == "dingo":
         samples_df = pd.DataFrame(samples, index=dingo_model.reactions)
         data = samples_df.loc[rxn_id]
@@ -228,7 +252,7 @@ def fba_insight(model, carbon_sources = [], eps = 1e-6):
 
 
 # Significantly different fluxes on a dataframe
-def different_fluxes_over_sign(samples, rxn_id, reactions_list=None):
+def different_fluxes_over_sign(samples, rxn_id, model, reactions_list=None):
     """
     Perform Mann-Whitney U test on each column of the DataFrame to find statistically significant
     """
@@ -271,7 +295,25 @@ def different_fluxes_over_sign(samples, rxn_id, reactions_list=None):
     print("Statistically significant columns (after FDR correction):")
     print(significant_columns)
 
-    return significant_columns, positive_rows, negative_rows
+    rows = []
+    for rxn_id in significant_columns:
+        pos_mean = positive_rows[rxn_id].mean()
+        neg_mean = negative_rows[rxn_id].mean()
+        if pos_mean * neg_mean < 0:
+            rxn = model.reactions.get_by_id(rxn_id)
+            rows.append({
+                "Reaction ID": rxn.id,
+                "Reaction name": rxn.name,
+                "Reaction": rxn.build_reaction_string(use_metabolite_names=True),
+                "Reactants": [met.id for met in rxn.reactants],
+                "Products": [met.id for met in rxn.products],
+                "Positive mean": pos_mean,
+                "Negative mean": neg_mean
+            })
+
+    df_sign_flip = pd.DataFrame(rows)
+
+    return significant_columns, positive_rows, negative_rows, df_sign_flip
 
 
 def count_ios(samples, model: cobra.Model, rxn_id: cobra.Reaction.id = None):
@@ -305,3 +347,183 @@ def count_ios(samples, model: cobra.Model, rxn_id: cobra.Reaction.id = None):
     result_df.columns = col_names
 
     return result_df.T.drop_duplicates().T
+
+
+def tsne(df, perplexity=50, kmeans_k = 2, eps=2, min_samples=5, plot = False, outfile = None):
+    """
+    t-SNE is a nonlinear dimensionality reduction technique.
+    It tries to preserve local neighborhoods: points that are close in high-dimensional space should remain close in 2D/3D.
+    """
+
+    # Suppose df is your data matrix (rows = samples, columns = features)
+    # Example: df = pd.read_csv("your_data.csv")
+
+    # 1. Standardize features (important for distance-based methods like t-SNE)
+    X = StandardScaler().fit_transform(df)
+
+    # 2. (Optional but common) Reduce dimensionality first with PCA
+    #    This speeds up t-SNE and denoises
+    X_pca = PCA(n_components=50).fit_transform(X)
+
+    # 3. Apply t-SNE
+    tsne = TSNE(
+        n_components  = 2,    # 2D output
+        perplexity    = perplexity,   # typical values: 5–50, tune for your data
+        learning_rate = 200,  # also tunable
+        max_iter      = 1000,  # Maximum number of iterations for the optimization. Should be at least 250.
+        random_state  = 42    # reproducibility
+    )
+    X_tsne = tsne.fit_transform(X_pca)
+
+    # 4. Put results in a DataFrame for plotting
+    tsne_df = pd.DataFrame(X_tsne, columns=["tSNE1", "tSNE2"])
+
+    # Choose a clustering method
+    # 1. K-means (requires choosing n_clusters)
+    kmeans = KMeans(
+        n_clusters   = kmeans_k,
+        random_state = 42
+    )
+    labels_kmeans = kmeans.fit_predict(X_tsne)
+
+    # 2. DBSCAN (density-based, no need to choose k, but need eps & min_samples)
+    dbscan = DBSCAN(
+        eps         = eps,
+        min_samples = min_samples
+    )
+    labels_dbscan = dbscan.fit_predict(X_tsne)
+
+    if plot:
+
+        if outfile is None:
+            outfile = Path() / "dbscan_kmeans_tsne"
+        else:
+            outfile = Path(outfile)
+
+        fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+        # Simple scatter plot
+        axes[0].scatter(tsne_df["tSNE1"], tsne_df["tSNE2"], s=30, alpha=0.7)
+        axes[0].set_xlabel("t-SNE 1")
+        axes[0].set_ylabel("t-SNE 2")
+        axes[0].set_title("t-SNE Scatter")
+
+        # Plot K-means result
+        axes[1].scatter(X_tsne[:,0], X_tsne[:,1], c=labels_kmeans, cmap='tab10')
+        axes[1].set_title('t-SNE + KMeans')
+
+        # Plot DBSCAN result
+        axes[2].scatter(X_tsne[:,0], X_tsne[:,1], c=labels_dbscan, cmap='tab10')
+        axes[2].set_title('t-SNE + DBSCAN')
+
+        plt.tight_layout()
+        plt.show()
+        plt.savefig(outfile.with_suffix(".png"), dpi = 300, format="png")
+
+    return labels_kmeans, labels_dbscan
+
+
+def tsne_dbscan_grid(X, perplexities=[20, 30, 50], min_samples=5, random_state=42):
+    """
+
+    Note:
+
+        When to skip PCA before t-SNE:
+
+            If you have moderate dimensions (say ≤50) and the features are already informative.
+
+            If your data is already denoised or you specifically want t-SNE to see the full space.
+    """
+
+    X_pca = PCA(n_components=30, random_state=42).fit_transform(X)
+
+    results = {}
+    for perp in perplexities:
+
+        # Step 1 – t-SNE projection
+        X_tsne = TSNE(n_components=2, perplexity=perp, random_state=random_state).fit_transform(X_pca)
+
+        # Step 2 – k-distance for eps suggestion
+        neigh = NearestNeighbors(n_neighbors=min_samples)
+        neigh.fit(X_tsne)
+        distances, _ = neigh.kneighbors(X_tsne)
+        k_distances = np.sort(distances[:, -1])  # distance to k-th neighbor
+
+        # Plot elbow
+        plt.figure()
+        plt.plot(k_distances)
+        plt.title(f"k-distance plot (perplexity={perp})")
+        plt.ylabel(f"{min_samples}th NN distance")
+        plt.xlabel("Points sorted by distance")
+        plt.show()
+
+        # Step 3 – auto-pick eps as elbow
+        # Simple heuristic: 90th percentile distance (adjustable)
+        eps_guess = np.percentile(k_distances, 90)
+
+        # Step 4 – DBSCAN
+        db = DBSCAN(eps=eps_guess, min_samples=min_samples)
+        labels = db.fit_predict(X_tsne)
+
+        results[perp] = {
+            'tsne'  : X_tsne,
+            'eps'   : eps_guess,
+            'labels': labels
+        }
+
+        print(f"Perplexity={perp}: eps≈{eps_guess:.4f}, clusters={len(set(labels)) - (1 if -1 in labels else 0)}")
+
+    return results
+
+
+def rxns_cluster_contribution(samples, labels):
+    """
+    samples (pd.DataFraeme)
+    labels (np.array)
+    """
+
+    df            = samples.copy()
+    df["cluster"] = labels
+
+    feature_names = samples.columns
+
+    rf = RandomForestClassifier()
+    rf.fit(df[feature_names], df["cluster"])
+    importances = pd.Series(rf.feature_importances_, index=feature_names)
+
+    return importances.sort_values(ascending=False)
+
+
+def is_normal(rxn_distribution):
+    """
+    Uses the D'Agostino and Pearson's test for normality.
+    Returns True if the data is normally distributed, False otherwise.
+    """
+    from scipy.stats import normaltest
+    stat, p_value = normaltest(rxn_distribution)
+    print("p =", p_value)
+    if p_value > 0.05:
+        print("Data appears normally distributed.")
+    else:
+        print("Data does NOT appear normally distributed.")
+    return p_value > 0.05
+
+
+def check_samples_range(samples, threshold=0.01):
+
+    breaking_constraints = []
+    for col in samples:
+        if samples[col].min() < -1000 or samples[col].max() > 1000:
+            breaking_constraints.append(col)
+
+    non_fixed_fluxes = []
+    for col in samples:
+        if abs(samples[col].min() - samples[col].max()) > threshold:
+            non_fixed_fluxes.append(col)
+
+    print(
+        f"Number of reactions whose bounds failed: {len(breaking_constraints)}\n"
+        f"Number of reaction with a non-fixed flux: {len(non_fixed_fluxes)}"
+    )
+
+    return breaking_constraints, non_fixed_fluxes
