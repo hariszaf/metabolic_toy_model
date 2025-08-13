@@ -14,3 +14,7 @@ COMETS_manifest.txt
 
 *.pkl
 *.pickle
+
+# Figs
+*.eps
+

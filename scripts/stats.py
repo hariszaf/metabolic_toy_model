@@ -540,8 +540,10 @@ def check_samples_range(samples, threshold=0.01):
     "cpd01775_c0"
 
 
+# Based on the `correlated_reactions()` from:
+# github.com/SotirisTouliopoulos/dingo-stats/blob/master/src/correlations_utils.py
 def correlated_reactions(
-    steady_states     : NDArray[np.float64],
+    samples           : pd.DataFrame,
     reactions         : List = [],
     subsystem         : str = None,
     linear_coeff      : str = "pearson",
@@ -560,13 +562,13 @@ def correlated_reactions(
     if indicator_cutoff < 1:
         raise Exception("Indicator cutoff must be at least equal to 1")
 
-    steady_states = steady_states[reactions].T
+    samples = samples[reactions].T
 
     # compute correlation matrix
     if linear_coeff == "pearson":
-        corr_matrix = np.corrcoef(steady_states, rowvar=True)
+        corr_matrix = np.corrcoef(samples, rowvar=True)
     elif linear_coeff == "spearman":
-        corr_matrix, _ = spearmanr(steady_states, axis=1)
+        corr_matrix, _ = spearmanr(samples, axis=1)
     else:
         raise Exception("Input value to linear_coeff parameter is not valid. Choose between pearson or spearman")
 
@@ -669,13 +671,19 @@ def correlated_reactions(
     fig.update_traces(xgap=1, ygap=1, hoverongaps=False)
     fig.show()
 
+    safe_subsystem = re.sub(r'_+', "_", re.sub(r'[\\/:"*?<>| ,]+', "_", subsystem))
     if outfile:
         outfile = Path(outfile)
+        if not outfile.is_dir():
+            dir_path  = outfile.parent
+            file_stem = outfile.stem
+            outfile = dir_path / f"{file_stem}_cor_heatmap_{safe_subsystem}"
+        else:
+            outfile = outfile / f"cor_heatmap_{safe_subsystem}"
     else:
         outfile = Path()
 
-    safe_subsystem = re.sub(r'[\\/:"*?<>|]+', "_", subsystem)
-    fig.write_image(outfile / f"cor_heatmap_{safe_subsystem}.eps", scale=3)
-    fig.write_image(outfile / f"cor_heatmap_{safe_subsystem}.png", scale=3, width=1200, height=800)
+    fig.write_image(outfile.with_suffix(".png"), scale=5, width=1200, height=800)
+    fig.write_image(outfile.with_suffix(".svg"))
 
     return correlation_matrix, correlations_dictionary
