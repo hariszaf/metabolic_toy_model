@@ -1,37 +1,38 @@
-# Metabolic modeling playground
+# `microbetag`: metabolic secrets behind microbial co-occurrence
 
-## About this repo
+Hello friend. 
 
-This repository contains material designed to teach, explain, and showcase the fundamentals and methods of metabolic modeling.
+In this branch you will find the material for the tutorial on [`microbetag`](https://microbetag.readthedocs.io/)
+in the framework of the *Data integration with Microbial Networks and Community Models* 
+summer school. 
 
-We organize workshops and classes, each associated with its own dedicated branch. The table below lists the branches and their corresponding events held so far.
+If you are reading this branch before the summer school and see anything funny, keep in mind that is a "living" branch, but also feel free to contact us, so we fix it before the school!
 
-|                                 Branch name                                 |                          Description                      |
-| :-------------------------------------------------------------------------: | :-------------------------------------------------------: |
-| [`antony25`](https://github.com/hariszaf/metabolic_toy_model/tree/antony25) |                                  ["Metabolic models applied to microbiomes" workshop](https://metabolicmodelingantony2025.onrender.com/) @ INRAE/PROSE, Antony, France                                                                        |
-|     [`duth`](https://github.com/hariszaf/metabolic_toy_model/tree/duth)     | ["Introduction to metabolic modeling" workshop](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/edit?usp=sharing) at Master in Biomedical Informatics, DUTH, Greece                                          |
-| [`sampling`](https://github.com/hariszaf/metabolic_toy_model/tree/sampling) |                                                             ["Sampling from the Solution Space of Genome-Scale Metabolic Models" chapter]()                                                                            |
+You may see [here](#contact) how to contact us! 
+
+## Agenda
 
 
-In the `main` branch, you'll find two key folders: [`scripts/`](./scripts/) and [`files`](./files/). These serve as the ground base of the repository, which is why they are included here.
-They support the reconstruction of three human gut–related metabolic toy models and provide resources to work with two of the most widely used namespaces in metabolic modeling: [ModelSEED](https://github.com/ModelSEED/ModelSEEDDatabase) and [BiGG](http://bigg.ucsd.edu/).
+|     Time      |                           Description                            |
+|:-------------:|:----------------------------------------------------------------:|
+| Part A (13:30 - 15:00)                                                           |
+| 13:30 - 16:00 | Definitions [ [slides]()  ] |
+| 16:00 - 16:30 | Metabolic modeling: basics in `cobrapy` |
 
 
 ## How to work with this repo 
 
-No matter which event you wish to go for, you can either [fire a GitHub codespace](https://github.com/codespaces/) using the branch of your choice to be checked out on creation, 
-or clone the repo locally and build a `conda` environment as described in the corresponding branch.
+You can either: 
+    - [fire a GitHub codespace](https://github.com/codespaces/), checking out to the `kul2025` branch, ot
+    - clone the repo locally and build a `conda` environment as described in the corresponding branch.
 
 For example:
 
     git clone https://github.com/hariszaf/metabolic_toy_model.git
     cd metabolic_toy_model
-    git checkout duth
+    git checkout kul2025
 
-Now, you could follow the instructions on [prep_env.ipynb](https://github.com/hariszaf/metabolic_toy_model/blob/duth/prep_env.ipynb) for how to build your local `conda` environment.
-
-Since each branch has its own goals, it also comes with its own set of requirements.
-
+Then you may jump to the [`microbetag_tutorial.ipynb`](./microbetag_tutorial.ipynb) notebook, and follow the instructions there, to install `microbetag`.
 
 ## Contact
 
