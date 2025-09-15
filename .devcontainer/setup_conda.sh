@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "hello friend"
-
 # Update
 sudo apt-get update
 
@@ -21,4 +19,9 @@ export PATH="$MINICONDA_DIR/bin:$PATH"
 eval "$(conda shell.bash hook)"
 conda init bash
 
-conda activate base
+# Get microbetag
+git clone https://github.com/msysbio/microbetag.git
+cd microbetag
+sudo bash setup_environment.sh
+pip install -e .
+cd ..
