@@ -19,6 +19,16 @@ export PATH="$MINICONDA_DIR/bin:$PATH"
 eval "$(conda shell.bash hook)"
 conda init bash
 
+# Accept conda terms of service
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+conda config --remove-key channels
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+
+
+
 # Get microbetag
 git clone https://github.com/msysbio/microbetag.git
 cd microbetag
