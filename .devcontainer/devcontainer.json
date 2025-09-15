@@ -1,0 +1,21 @@
+{
+  "name": "Codespace for microbetag tutorial on Data integration with Microbial Networks and Community Models summer school",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+  "features": {},
+  "postCreateCommand": [
+    "sudo apt-get update",
+    "git clone https://github.com/msysbio/microbetag.git",
+    "cd microbetag", 
+    "sudo bash setup_environment.sh",
+    "pip install -e .",
+    "cd .."
+  ]
+}
