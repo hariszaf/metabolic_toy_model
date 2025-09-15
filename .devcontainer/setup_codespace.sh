@@ -5,6 +5,8 @@ sudo apt-get update
 
 # Install Miniconda silently
 MINICONDA_DIR="/opt/miniconda"
+CONDA_BIN="/opt/miniconda/bin/conda"
+
 if [ ! -d "$MINICONDA_DIR" ]; then
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
     sudo bash /tmp/miniconda.sh -b -p "$MINICONDA_DIR"
@@ -20,13 +22,8 @@ eval "$(conda shell.bash hook)"
 conda init bash
 
 # Accept conda terms of service
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-conda config --remove-key channels
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-
+echo "Ensuring Anaconda TOS acceptance..."
+$CONDA_BIN tos accept --all
 
 
 # Get microbetag
