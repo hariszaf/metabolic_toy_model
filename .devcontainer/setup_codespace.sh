@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # Update
+# -----
 sudo apt-get update
 
-# Install Miniconda silently
+
+# Install Miniconda
+# -----
 MINICONDA_DIR="/opt/miniconda"
 CONDA_BIN="/opt/miniconda/bin/conda"
 
@@ -27,7 +30,9 @@ $CONDA_BIN tos accept --all
 
 
 # Get microbetag
-git clone https://github.com/msysbio/microbetag.git
+# -----
+# git clone https://github.com/hariszaf/microbetag.git
+git clone -b codespace https://github.com/hariszaf/microbetag.git --single-branch
 cd microbetag
 sudo bash setup_environment.sh
 pip install -e .
