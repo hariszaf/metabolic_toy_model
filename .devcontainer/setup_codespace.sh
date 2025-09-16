@@ -49,6 +49,6 @@ echo -e "-- Miniconda setup on the Codespace has been completed. \U0001F389 \n\n
 # -----
 git clone -b codespace https://github.com/hariszaf/microbetag.git --single-branch
 cd microbetag
-bash setup_environment.sh -- # no sudo
+bash setup_environment.sh --phenotrex # no sudo
 # pip install -e .
 cd ..
