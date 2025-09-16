@@ -7,7 +7,7 @@ sudo apt-get update
 
 # Install Miniconda
 # -----
-MINICONDA_DIR="/opt/miniconda"
+MINICONDA_DIR="$HOME/miniconda"
 CONDA_BIN="$MINICONDA_DIR/bin/conda"
 
 if [ ! -d "$MINICONDA_DIR" ]; then
