@@ -22,12 +22,12 @@ export PATH="$MINICONDA_DIR/bin:$PATH"
 
 # Initialize conda for bash
 eval "$(conda shell.bash hook)"
-conda init bash
+sudo $CONDA_BIN init bash
 
 # Accept conda terms of service
 echo "Ensuring Anaconda TOS acceptance..."
-conda config --system --set always_yes true
-conda config --system --set auto_update_conda false
+sudo $CONDA_BIN config --system --set always_yes true
+sudo $CONDA_BIN config --system --set auto_update_conda false
 
 # Get microbetag
 # -----
