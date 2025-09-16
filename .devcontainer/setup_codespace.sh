@@ -8,7 +8,7 @@ sudo apt-get update
 # Install Miniconda
 # -----
 MINICONDA_DIR="/opt/miniconda"
-CONDA_BIN="/opt/miniconda/bin/conda"
+CONDA_BIN="$MINICONDA_DIR/bin/conda"
 
 if [ ! -d "$MINICONDA_DIR" ]; then
     wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
@@ -20,18 +20,20 @@ fi
 echo 'export PATH="$MINICONDA_DIR/bin:$PATH"' >> ~/.bashrc
 export PATH="$MINICONDA_DIR/bin:$PATH"
 
-# Initialize conda for bash
-eval "$(conda shell.bash hook)"
-sudo $CONDA_BIN init bash
+# Initialize conda for bash (without sudo)
+eval "$($CONDA_BIN shell.bash hook)"
+
+# Force base to use Python 3.10
+$CONDA_BIN install -n base python=3.10 -y
 
 # Accept conda terms of service
 echo "Ensuring Anaconda TOS acceptance..."
-sudo $CONDA_BIN config --system --set always_yes true
-sudo $CONDA_BIN config --system --set auto_update_conda false
+$CONDA_BIN config --system --set always_yes true
+$CONDA_BIN config --system --set auto_update_conda false
+
 
 # Get microbetag
 # -----
-# git clone https://github.com/hariszaf/microbetag.git
 git clone -b codespace https://github.com/hariszaf/microbetag.git --single-branch
 cd microbetag
 sudo bash setup_environment.sh
