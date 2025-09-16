@@ -38,7 +38,9 @@ grep -qxF "$CONDA_SH_LINE" ~/.bashrc || echo "$CONDA_SH_LINE" >> ~/.bashrc
 $CONDA_BIN config --set always_yes true
 $CONDA_BIN config --set auto_update_conda false
 
-echo "Miniconda setup complete. You can now open a new terminal and run 'conda activate base'."
+$CONDA_BIN activate base
+
+echo -e "-- Miniconda setup on the Codespace has been completed. \U0001F389 \n\n"
 
 
 # Get microbetag
