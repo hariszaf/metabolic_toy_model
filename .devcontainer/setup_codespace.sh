@@ -11,7 +11,7 @@ MINICONDA_DIR="/opt/miniconda"
 CONDA_BIN="/opt/miniconda/bin/conda"
 
 if [ ! -d "$MINICONDA_DIR" ]; then
-    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
     sudo bash /tmp/miniconda.sh -b -p "$MINICONDA_DIR"
     rm /tmp/miniconda.sh
 fi
@@ -26,8 +26,8 @@ conda init bash
 
 # Accept conda terms of service
 echo "Ensuring Anaconda TOS acceptance..."
-$CONDA_BIN tos accept
-
+conda config --system --set always_yes true
+conda config --system --set auto_update_conda false
 
 # Get microbetag
 # -----
