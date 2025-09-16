@@ -10,5 +10,5 @@
     }
   },
   "features": {},
-  "postCreateCommand": "bash .devcontainer/setup_conda.sh"
+  "postCreateCommand": "bash .devcontainer/setup_codespace.sh"
 }
