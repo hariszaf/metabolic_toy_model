@@ -26,7 +26,7 @@ conda init bash
 
 # Accept conda terms of service
 echo "Ensuring Anaconda TOS acceptance..."
-$CONDA_BIN tos accept --all
+$CONDA_BIN tos accept
 
 
 # Get microbetag
