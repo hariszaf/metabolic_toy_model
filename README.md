@@ -3,21 +3,74 @@
 Hello friend. 
 
 In this branch you will find the material for the tutorial on [`microbetag`](https://microbetag.readthedocs.io/)
-in the framework of the [*Data integration with Microbial Networks and Community Models*](http://msysbiology.com/microbialdataintegration/)
-summer school. 
+in the framework of the [*Data integration with Microbial Networks and Community Models*](http://msysbiology.com/microbialdataintegration/) summer school. 
 
 If you are reading this branch before the summer school and see anything funny, keep in mind that is a "living" branch, but also feel free to contact us, so we fix it before the school!
 
 You may see [here](#contact) how to contact us! 
 
 ## Agenda
-
-
+<!-- 
 |     Time      |                           Description                            |
 |:-------------:|:----------------------------------------------------------------:|
-| Part A (13:30 - 15:00)                                                           |
-| 13:30 - 16:00 | Definitions [ [slides]()  ] |
-| 16:00 - 16:30 | Metabolic modeling: basics in `cobrapy` |
+|                         Part A (13:30 - 15:00)                                  |
+| 13:30 - 13:50 | Setup the scene  |
+| 13:50 - 14:10 |Build a co-occurrence network — a first example of running `microbetag` partially. | 
+| 14:10 - 14:30 | Annotating nodes: literature and genome-derived phenotypic traits |
+| 14:30 - 15:00 | Annotating edges (part A): introduction in metabolic models and metabolic complementarity  |
+|                         Break (15:00 - 15:30)                                  |
+|                         Part B (15:30 - 17:00)                                  |
+| 15:30 - 16:00 | Annotating edges (part B): Complementarity in a synthetic community|
+| 16:00 - 16:45 | A real-world example with a subgingival plaque dataset |
+ -->
+
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:center;">Time</th>
+      <th style="text-align:center;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="2" align="center"><b>Part A (13:30-15:00)</b></td>
+    </tr>
+    <tr>
+      <td align="center" ><nobr>13:30-13:50<nobr></td>
+      <td>Setup the scene</td>
+    </tr>
+    <tr>
+      <td align="center" >13:50-14:10</td>
+      <td>Build a co-occurrence network — a first example of running <code>microbetag</code> partially</td>
+    </tr>
+    <tr>
+      <td align="center" >14:10-14:30</td>
+      <td>Annotating nodes: literature and genome-derived phenotypic traits</td>
+    </tr>
+    <tr>
+      <td align="center" >14:30-15:00</td>
+      <td>Annotating edges (part A): introduction in metabolic models and metabolic complementarity</td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><b>☕   BREAK (15:00-15:30)   ☕ </b></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><b>Part B (15:30-17:00)</b></td>
+    </tr>
+    <tr>
+      <td align="center" >15:30-16:00</td>
+      <td>Annotating edges (part B): Complementarity in a synthetic community</td>
+    </tr>
+    <tr>
+      <td align="center" >16:00-16:45</td>
+      <td>A real-world example with a subgingival plaque dataset</td>
+    </tr>
+  </tbody>
+</table>
+
+- [slides](https://docs.google.com/presentation/d/15WvhB9Vff3fWYVFUMFNaGt8xiR1J4lhcKyq7AeR3YVU/edit?usp=sharing)
+- [notebook](./microbetag_tutorial.ipynb)
 
 
 ## How to work with this repo 
@@ -42,17 +95,19 @@ For example:
 
 
 Make sure you have conda or miniconda available on your computing environment. 
-GitHub codespace brings it by default, in case you wish to run this tutorial locally, then you may follow the instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/install).
+GitHub codespace brings it by default, but if you prefer running this tutorial locally, and you don't have conda, 
+then you may follow the instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/install).
+
+You can now jump to the [`microbetag_tutorial.ipynb`](./microbetag_tutorial.ipynb) notebook! 
+
+## About codespaces
+
+Based on [GitHub's documentation](https://docs.github.com/en/codespaces/developing-in-a-codespace/deleting-a-codespace):
+
+GitHub Codespaces are automatically deleted after they have been stopped and have remained inactive for a defined number of days. 
+The retention period for each codespace is set when the codespace is created and does not change. The default retention period is 30 days. 
 
 
-> **Attention!**
->
-> In case you work on codespace, make sure you first activate a base environment. 
-
-
-
-
-Then you may jump to the [`microbetag_tutorial.ipynb`](./microbetag_tutorial.ipynb) notebook, and follow the instructions there, to install `microbetag`.
 
 ## Contact
 

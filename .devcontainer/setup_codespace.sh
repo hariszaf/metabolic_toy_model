@@ -4,6 +4,7 @@
 # -----
 sudo apt-get update
 sudo apt install -y vim
+sudo apt-get install patchelf  # Required for Julia..
 
 # Install Miniconda
 # -----
