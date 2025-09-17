@@ -3,7 +3,7 @@
 # Update
 # -----
 sudo apt-get update
-
+sudo apt install -y vim
 
 # Install Miniconda
 # -----

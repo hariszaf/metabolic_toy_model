@@ -1,6 +1,7 @@
 __pycache__/
 .ipynb_checkpoints/
 .vscode/
+
 one_per_phylum_models/
 shewanella_models/
 
@@ -9,3 +10,5 @@ comets_linux*
 .current_*
 *.cmd
 COMETS_manifest.txt
+
+licenses
