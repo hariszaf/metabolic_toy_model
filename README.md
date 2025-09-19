@@ -10,7 +10,8 @@ We organize workshops and classes, each associated with its own dedicated branch
 | :-------------------------------------------------------------------------: | :-------------------------------------------------------: |
 | [`antony25`](https://github.com/hariszaf/metabolic_toy_model/tree/antony25) |                                  ["Metabolic models applied to microbiomes" workshop](https://metabolicmodelingantony2025.onrender.com/) @ INRAE/PROSE, Antony, France                                                                        |
 |     [`duth`](https://github.com/hariszaf/metabolic_toy_model/tree/duth)     | ["Introduction to metabolic modeling" workshop](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/edit?usp=sharing) at Master in Biomedical Informatics, DUTH, Greece                                          |
-| [`sampling`](https://github.com/hariszaf/metabolic_toy_model/tree/sampling) |                                                             ["Sampling from the Solution Space of Genome-Scale Metabolic Models" chapter]()                                                                            |
+| [`sampling`](https://github.com/hariszaf/metabolic_toy_model/tree/sampling) |                                                             ["Sampling from the Solution Space of Genome-Scale Metabolic Models"]() chapter                                                                            |
+| [`kul2025`](https://github.com/hariszaf/metabolic_toy_model/tree/kul2025)| [Data integration with Microbial Networks and Community Models Summer school](http://msysbiology.com/microbialdataintegration/) @ Rega Institute, Leuven, Belgium |
 
 
 In the `main` branch, you'll find two key folders: [`scripts/`](./scripts/) and [`files`](./files/). These serve as the ground base of the repository, which is why they are included here.
