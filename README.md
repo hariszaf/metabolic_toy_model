@@ -34,9 +34,6 @@ You may see [here](#contact) how to contact us!
   </thead>
   <tbody>
     <tr>
-      <td colspan="2" align="center"><b>Part A (13:30-15:00)</b></td>
-    </tr>
-    <tr>
       <td align="center" ><nobr>13:30-13:50<nobr></td>
       <td>Setup the scene</td>
     </tr>
@@ -50,13 +47,10 @@ You may see [here](#contact) how to contact us!
     </tr>
     <tr>
       <td align="center" >14:30-15:00</td>
-      <td>Annotating edges (part A): introduction in metabolic models and metabolic complementarity</td>
+      <td>Annotating edges (part A): introduction in metabolic models and complementarity</td>
     </tr>
     <tr>
       <td colspan="2" align="center"><b>☕   BREAK (15:00-15:30)   ☕ </b></td>
-    </tr>
-    <tr>
-      <td colspan="2" align="center"><b>Part B (15:30-17:00)</b></td>
     </tr>
     <tr>
       <td align="center" >15:30-16:00</td>
@@ -66,8 +60,14 @@ You may see [here](#contact) how to contact us!
       <td align="center" >16:00-16:45</td>
       <td>A real-world example with a subgingival plaque dataset</td>
     </tr>
+    <tr>
+      <td align="center" >16:45-17:00</td>
+      <td>Q & A</td>
+    </tr>
   </tbody>
 </table>
+
+## Material
 
 - [slides](https://docs.google.com/presentation/d/15WvhB9Vff3fWYVFUMFNaGt8xiR1J4lhcKyq7AeR3YVU/edit?usp=sharing)
 - [notebook](./microbetag_tutorial.ipynb)
@@ -84,8 +84,8 @@ For the needs of this tutorial, make sure you have:
 
 To run the notebook of this tutorial, you can either: 
 
-    - [fire a GitHub codespace](https://github.com/codespaces/), checking out to the `kul2025` branch, ot
-    - clone the repo locally and build a `conda` environment as described in the corresponding branch.
+  - [fire a GitHub codespace](https://github.com/codespaces/), checking out to the `kul2025` branch, ot
+  - clone the repo locally and build a `conda` environment as described in the corresponding branch.
 
 For example:
 
