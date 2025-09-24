@@ -15,13 +15,14 @@ You may see [here](#contact) how to contact us!
 |:-------------:|:----------------------------------------------------------------:|
 |                         Part A (13:30 - 15:00)                                  |
 | 13:30 - 13:50 | Setup the scene  |
-| 13:50 - 14:10 |Build a co-occurrence network — a first example of running `microbetag` partially. | 
-| 14:10 - 14:30 | Annotating nodes: literature and genome-derived phenotypic traits |
-| 14:30 - 15:00 | Annotating edges (part A): introduction in metabolic models and metabolic complementarity  |
+| 13:50 - 14:00 | Reading the last page first |
+| 13:00 - 14:20 | Build a co-occurrence network — a first example of running `microbetag` partially. | 
+| 14:20 - 14:40 | Annotating nodes: literature and genome-derived phenotypic traits |
+| 14:40 - 15:00 | Annotating edges (part A): pathway complmenetarity |
 |                         Break (15:00 - 15:30)                                  |
 |                         Part B (15:30 - 17:00)                                  |
-| 15:30 - 16:00 | Annotating edges (part B): Complementarity in a synthetic community|
-| 16:00 - 16:45 | A real-world example with a subgingival plaque dataset |
+| 15:30 - 16:00 | Annotating edges (part B): seed complementarity |
+| 16:00 - 16:45 | Two real-world example cases |
  -->
 
 
@@ -38,27 +39,31 @@ You may see [here](#contact) how to contact us!
       <td>Setup the scene</td>
     </tr>
     <tr>
-      <td align="center" >13:50-14:10</td>
+      <td align="center" ><nobr>13:50-14:00<nobr></td>
+      <td>Reading the last page first</td>
+    </tr>
+    <tr>
+      <td align="center" >14:00-14:20</td>
       <td>Build a co-occurrence network — a first example of running <code>microbetag</code> partially</td>
     </tr>
     <tr>
-      <td align="center" >14:10-14:30</td>
+      <td align="center" >14:20-14:40</td>
       <td>Annotating nodes: literature and genome-derived phenotypic traits</td>
     </tr>
     <tr>
-      <td align="center" >14:30-15:00</td>
-      <td>Annotating edges (part A): introduction in metabolic models and complementarity</td>
+      <td align="center" >14:40-15:00</td>
+      <td>Annotating edges (part A): pathway complmenetarity</td>
     </tr>
     <tr>
       <td colspan="2" align="center"><b>☕   BREAK (15:00-15:30)   ☕ </b></td>
     </tr>
     <tr>
       <td align="center" >15:30-16:00</td>
-      <td>Annotating edges (part B): Complementarity in a synthetic community</td>
+      <td>Annotating edges (part B): seed complementarity</td>
     </tr>
     <tr>
       <td align="center" >16:00-16:45</td>
-      <td>A real-world example with a subgingival plaque dataset</td>
+      <td>Two real-world example cases and an on-the-fly one: which one you ll go for?</td>
     </tr>
     <tr>
       <td align="center" >16:45-17:00</td>
