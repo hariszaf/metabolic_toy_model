@@ -1,7 +1,4 @@
-#cobrapy
-cobra
-
-#general
+# General libraries
 pandas
 seaborn
 matplotlib
@@ -11,13 +8,10 @@ Cython==0.29.37
 numpy==1.26.4
 highspy==1.11.0
 dingo_walk==0.1.6
-
 cobra==0.29.1
-
 
 # Rounding
 PolyRound==0.2.10
 
-
-# community model
+# Community model
 pycomo==0.2.8
