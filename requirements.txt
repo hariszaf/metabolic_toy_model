@@ -4,16 +4,16 @@ seaborn
 matplotlib
 
 # dingo
-Cython==0.29.37
-numpy==1.26.4
-highspy==1.11.0
 #dingo_walk==0.1.6
+Cython==0.29.37
+highspy==1.11.0
 cobra==0.29.1
+# For dingo 0.1.8
+numpy==1.25.2
 
 --index-url https://test.pypi.org/simple/
 --extra-index-url https://pypi.org/simple
 dingo_walk==0.1.8
-
 
 # Rounding
 PolyRound==0.2.10
