@@ -7,8 +7,13 @@ matplotlib
 Cython==0.29.37
 numpy==1.26.4
 highspy==1.11.0
-dingo_walk==0.1.6
+#dingo_walk==0.1.6
 cobra==0.29.1
+
+--index-url https://test.pypi.org/simple/
+--extra-index-url https://pypi.org/simple
+dingo_walk==0.1.8
+
 
 # Rounding
 PolyRound==0.2.10
