@@ -4,19 +4,23 @@ seaborn
 matplotlib
 
 # dingo
-#dingo_walk==0.1.6
 Cython==0.29.37
 highspy==1.11.0
 cobra==0.29.1
 # For dingo 0.1.8
 numpy==1.25.2
-
+# Use the testpypi version
 --index-url https://test.pypi.org/simple/
 --extra-index-url https://pypi.org/simple
 dingo_walk==0.1.8
 
 # Rounding
 PolyRound==0.2.10
+
+# Minimal pathways
+gurobipy==9.5.2
+mptool
+
 
 # Community model
 pycomo==0.2.8

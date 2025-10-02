@@ -12,9 +12,6 @@ You may see [here](#contact) how to contact us!
 
 ## Agenda
 
-15:45 - 17:45
-
-
 <table>
   <thead>
     <tr>
@@ -47,7 +44,7 @@ You may see [here](#contact) how to contact us!
       <td> <b>Hands-on (part B):</b> Statistical exploration of flux sampling data using <code>dingo-stats</code> </td>
     </tr>
     <tr>
-      <td align="center" >16:45-17:00</td>
+      <td align="center" >17:35-17:45</td>
       <td>Q & A</td>
     </tr>
   </tbody>
@@ -55,7 +52,7 @@ You may see [here](#contact) how to contact us!
 
 ## Material
 
-- [slides]()
+- [slides](https://docs.google.com/presentation/d/1yb8Z7gJ9TlJwT6GnS1KUQdNy_IWb3ZIxMUUMeNmO_KM/edit?usp=sharing)
 - [notebook](./flux_sampling.ipynb)
 
 
