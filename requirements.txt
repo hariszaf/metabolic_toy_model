@@ -21,6 +21,11 @@ PolyRound==0.2.10
 gurobipy==9.5.2
 mptool
 
+# Notebook
+tqdm
+umap-learn
+statsmodels
+arviz
 
 # Community model
 pycomo==0.2.8
