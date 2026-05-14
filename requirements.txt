@@ -10,27 +10,27 @@ cobra       >= 0.29.0
 gurobipy    == 12.0.1
 ModelSEEDpy == 0.4.2
 dingo-walk  == 0.1.6
-taxoniq     == 1.0.3
+# taxoniq     == 1.0.3
 
-# Jupyter
-jinja2
-ipython-genutils
-jupyter        == 1.0.0
-jupyter-core   >= 4.6.1
-jupyter-client >= 5.3.4
+# # Jupyter
+# jinja2
+# ipython-genutils
+# jupyter        == 1.0.0
+# jupyter-core   >= 4.6.1
+# jupyter-client >= 5.3.4
 
-ipykernel == 6.17.1
-pexpect   == 4.9.0
-tornado   >= 6.1
-traitlets >= 4.2.1
+# ipykernel == 6.17.1
+# pexpect   == 4.9.0
+# tornado   >= 6.1
+# traitlets >= 4.2.1
 
-Send2Trash >= 1.8.0
-terminado  >= 0.8.3
+# Send2Trash >= 1.8.0
+# terminado  >= 0.8.3
 
 
-nbformat
-nbconvert>=5
-nest-asyncio>=1.5
+# nbformat
+# nbconvert>=5
+# nest-asyncio>=1.5
 
-argon2-cffi
-prometheus-client
+# argon2-cffi
+# prometheus-client
