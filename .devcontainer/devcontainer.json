@@ -1,0 +1,23 @@
+{
+  "name": "Codespace for workshop on Applied Bioinformatics & Data Analysis at DUTH",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+  "features": {},
+  "postCreateCommand": [
+    "sudo apt-get update",
+    "sudo apt-get install -y libsuitesparse-dev",
+    "pip install -r requirements.txt",
+    // "git clone https://gitlab.com/csb.ethz/PolyRound.git",
+    // "cd PolyRound && pip install -e .",
+    // "cd ..",
+  ]
+  
+  // "sudo apt-get update && sudo apt-get install -y libsuitesparse-dev && pip install -r requirements.txt"
+}
