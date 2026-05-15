@@ -4,32 +4,41 @@ import json
 import copy
 import itertools
 from csv import DictReader
+
 from utils import get_root_dir_from_script
 
 root_path = get_root_dir_from_script()
 
 class Reactions:
+
     def __init__(self, biochem_root=os.path.join(root_path, 'files', 'biochemistry'),
                  rxns_file='reactions.tsv'):
 
+        from MSEED_compounds import Compounds
+
         self.BiochemRoot = biochem_root
-        self.RxnsFile = os.path.join(self.BiochemRoot, rxns_file)
-        self.AliasFile = os.path.join(self.BiochemRoot,  "Aliases", "Unique_ModelSEED_Reaction_Aliases.txt")
-        self.NameFile = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_Names.txt")
-        self.PwyFile = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_Pathways.txt")
-        self.ECFile = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_ECs.txt")
+        self.RxnsFile    = os.path.join(self.BiochemRoot, rxns_file)
+        self.AliasFile   = os.path.join(self.BiochemRoot,  "Aliases", "Unique_ModelSEED_Reaction_Aliases.txt")
+        self.NameFile    = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_Names.txt")
+        self.PwyFile     = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_Pathways.txt")
+        self.ECFile      = os.path.join(self.BiochemRoot, "Aliases", "Unique_ModelSEED_Reaction_ECs.txt")
 
         reader = DictReader(open(self.RxnsFile), dialect='excel-tab')
         self.Headers = reader.fieldnames
 
-        from MSEED_compounds import Compounds
         self.CompoundsHelper = Compounds()
-        self.Compounds_Dict = self.CompoundsHelper.loadCompounds()
+        self.Compounds_Dict  = self.CompoundsHelper.loadCompounds()
 
     def loadReactions(self):
+
         reader = DictReader(open(self.RxnsFile), dialect='excel-tab')
-        type_mapping = {"is_transport": int, "is_obsolete": int,
-                        "deltag": float, "deltagerr": float}
+
+        type_mapping = {
+            "is_transport" : int, 
+            "is_obsolete"  : int,
+            "deltag"       : float, 
+            "deltagerr"    : float
+        }
         lists = ["aliases","pathways","ec_numbers","notes"]
         dicts = []
 
@@ -55,10 +64,13 @@ class Reactions:
         return rxns_dict
 
     def parseEquation(self, equation_string):
+
         rxn_cpds_array = list()
-        reagent=-1
-        coeff=1
-        index=0
+
+        reagent = -1
+        coeff   = 1
+        index   = 0
+
         for text in equation_string.split(" "):
             if(text == "+"):
                 continue
@@ -82,20 +94,29 @@ class Reactions:
                 #Side of equation
                 coeff=coeff*reagent
 
-                (cpd,cpt)=(match.group(1),match.group(2))
+                (cpd,cpt) = (match.group(1), match.group(2))
+                
                 rgt_id = cpd + "_" + cpt + str(index)
-                cpt = int(cpt)
-                name = self.Compounds_Dict[cpd]["name"]
+                cpt    = int(cpt)
+                name    = self.Compounds_Dict[cpd]["name"]
                 formula = self.Compounds_Dict[cpd]["formula"]
-                charge = self.Compounds_Dict[cpd]["charge"]
+                charge  = self.Compounds_Dict[cpd]["charge"]
 
-                rxn_cpds_array.append({"reagent": rgt_id, "coefficient": coeff,
-                                       "compound": cpd, "compartment": cpt,
-                                       "index": index, "name": name,
-                                       "formula": formula, "charge": charge})
+                rxn_cpds_array.append(
+                    {
+                        "reagent"     : rgt_id, 
+                        "coefficient" : coeff,
+                        "compound"    : cpd, 
+                        "compartment" : cpt,
+                        "index"       : index, 
+                        "name"        : name,
+                        "formula"     : formula, 
+                        "charge"      : charge
+                    }
+                )
 
                 #Need to reset coeff for next compound
-                coeff=1
+                coeff = 1
 
         return rxn_cpds_array
 
@@ -119,13 +140,18 @@ class Reactions:
             cpt = int(cpt)
             index = int(index)
 
-            rxn_cpds_array.append({"reagent": rgt_id, "coefficient": coeff,
-                                   "compound": cpd, "compartment": cpt,
-                                   "index": index, "name": name,
-                                   "formula": self.Compounds_Dict[cpd][
-                                       "formula"],
-                                   "charge": self.Compounds_Dict[cpd][
-                                       "charge"]})
+            rxn_cpds_array.append(
+                {
+                    "reagent"     : rgt_id, 
+                    "coefficient" : coeff,
+                    "compound"    : cpd, 
+                    "compartment" : cpt,
+                    "index"       : index, 
+                    "name"        : name,
+                    "formula"     : self.Compounds_Dict[cpd]["formula"],
+                    "charge"      : self.Compounds_Dict[cpd]["charge"]
+                }
+            )
         return rxn_cpds_array
 
     def parseStoichOnt(self, stoichiometry):
@@ -133,7 +159,7 @@ class Reactions:
 
         #For empty reaction
         if(stoichiometry == ""):
-            return rxn_cpds_array
+            return ValueError
 
         for rgt in stoichiometry.split(";"):
             (coeff, cpd, cpt, index, name) = rgt.split(":", 4)

@@ -25,7 +25,7 @@ root_path = get_root_dir_from_script()
 # ------------  PART TO EDIT DURING THE CLASS  ---------------------
 
 # Change the name of the file that the model will be saved if you like!
-modelFileName = 'sugar_fermenter_toy_model.xml'
+modelFileName = 'sugar_fermenter_toy_modelasdas.xml'
 
 
 # ------------  PART TO EDIT DURING THE CLASS  ---------------------
