@@ -1,36 +1,43 @@
 # Notebook and scripts 
 numpy       == 1.23.4
+pandas      == 2.3.3
 scipy       == 1.13.0
 openpyxl    == 3.1.0
 matplotlib  == 3.8.4
 plotly      == 5.22.0
 
-
+# Metabolic modeling
+carveme
 cobra       >= 0.29.0
 gurobipy    == 12.0.1
 ModelSEEDpy == 0.4.2
 dingo-walk  == 0.1.6
-# taxoniq     == 1.0.3
+taxoniq     == 1.0.3
 
-# # Jupyter
-# jinja2
-# ipython-genutils
-# jupyter        == 1.0.0
-# jupyter-core   >= 4.6.1
-# jupyter-client >= 5.3.4
+# Jupyter
+jupyter        == 1.0.0
+jupyter-core   >= 4.6.1
+jupyter-client >= 5.3.4
 
-# ipykernel == 6.17.1
-# pexpect   == 4.9.0
-# tornado   >= 6.1
-# traitlets >= 4.2.1
+# Python execution (kernel)
+ipykernel == 6.17.1
+tornado   >= 6.1
+traitlets >= 4.2.1
+nest-asyncio>=1.5
 
-# Send2Trash >= 1.8.0
-# terminado  >= 0.8.3
+# Notebook format + files
+nbformat
+nbconvert >= 5
 
+# Security / persistence / system integration
+argon2-cffi
+Send2Trash >= 1.8.0
 
-# nbformat
-# nbconvert>=5
-# nest-asyncio>=1.5
+# Interactive environment tools
+pexpect    == 4.9.0
+terminado  >= 0.8.3
 
-# argon2-cffi
-# prometheus-client
+# Utilities / glue packages
+jinja2
+ipython-genutils
+prometheus-client
