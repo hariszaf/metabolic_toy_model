@@ -9,13 +9,15 @@ by: Haris Zafeiropoulos
 """
 # Allow running from any path
 import os, sys
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.abspath(os.path.join(script_dir, ".."))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-from cobra import Model
-from getModelReactions import *
+import cobra
+
+from getModelReactions import getModelReactions, creatMetObj
 from utils import get_root_dir_from_script, makeSink, get_reactions_from_tsv
 
 root_path = get_root_dir_from_script()
@@ -28,12 +30,13 @@ modelFileName = 'sugar_fermenter_toy_model.xml'
 
 # ------------  PART TO EDIT DURING THE CLASS  ---------------------
 
-modelOutput = os.path.join(root_path, 'files', 'models', modelFileName)
-path_to_reactions_file = os.path.join(root_path, 'files', 'BT_metabolicReactions.txt')
-reactions = get_reactions_from_tsv(path_to_reactions_file)
+modelOutput            = os.path.join(root_path, 'files', 'models', modelFileName)
+path_to_reactions_file = os.path.join(root_path, 'files', 'based_on_reactions', 'BT_metabolicReactions.txt')
+
+reactions      = get_reactions_from_tsv(path_to_reactions_file)
 modelReactions = getModelReactions(reactions)
 
-model = Model("sugar_fermenter")
+model = cobra.Model("sugar_fermenter")
 model.add_reactions(modelReactions)
 
 ##############add external metabolites########
@@ -78,11 +81,12 @@ protEX = makeSink('EX_cpd00067_e', prot_e)
 # across the cytoplasmic membrane (CM).
 prot_e = model.metabolites.cpd00067_e.copy()
 prot_c = model.metabolites.cpd00067_c.copy()
-nad_c = model.metabolites.cpd00003_c.copy()
+nad_c  = model.metabolites.cpd00003_c.copy()
 nadh_c = model.metabolites.cpd00004_c.copy()
 fdox_c = model.metabolites.cpd11621_c.copy()
 fdrd_c = model.metabolites.cpd11620_c.copy()
-rnf = Reaction('RNF')
+
+rnf = cobra.Reaction('RNF')
 rnf.name = 'RNF'
 rnf.lower_bound = 0
 rnf.upper_bound = 1000
@@ -94,31 +98,33 @@ atp_c = model.metabolites.cpd00002_c.copy()
 adp_c = model.metabolites.cpd00008_c.copy()
 accoA_c = model.metabolites.cpd00022_c.copy()
 coA_c = model.metabolites.cpd00010_c.copy()
-biomass_c = Metabolite('biomass', compartment='c')
-biomass = Reaction('biomass')
+biomass_c = cobra.Metabolite('biomass', compartment='c')
+biomass = cobra.Reaction('biomass')
 biomass.name='Mock biomass function'
 biomass.lower_bound=0
 biomass.upper_bound=1000
-biomass.add_metabolites({atp_c:-3,
-                         accoA_c:-2,
-                         nadh_c:-2,
-                         prot_c:-2,
-                         adp_c:3,
-                         nad_c:2,
-                         coA_c:2
-                         })
+biomass.add_metabolites(
+    {
+        atp_c   : -3,
+        accoA_c : -2,
+        nadh_c  : -2,
+        prot_c  : -2,
+        adp_c   : 3,
+        nad_c   : 2,
+        coA_c   : 2
+    }
+)
 
 
 #add needed sink reactions
-piSink = makeSink('piSink', model.metabolites.cpd00009_c)
-h2oSink = makeSink('h2oSink', model.metabolites.cpd00001_c)
+piSink   = makeSink('piSink', model.metabolites.cpd00009_c)
+h2oSink  = makeSink('h2oSink', model.metabolites.cpd00001_c)
 protSink = makeSink('protSink', model.metabolites.cpd00067_c)
-atpSink = makeSink('atpSink', model.metabolites.cpd00002_c)
-adpSink = makeSink('adpSink', model.metabolites.cpd00008_c)
-nadSink = makeSink('nadSink', model.metabolites.cpd00003_c)
+atpSink  = makeSink('atpSink', model.metabolites.cpd00002_c)
+adpSink  = makeSink('adpSink', model.metabolites.cpd00008_c)
+nadSink  = makeSink('nadSink', model.metabolites.cpd00003_c)
 nadhSink = makeSink('nadhSink', model.metabolites.cpd00004_c)
-xSink = makeSink('xSink', model.metabolites.cpd00032_c)
-
+xSink    = makeSink('xSink', model.metabolites.cpd00032_c)
 
 
 #add all new reactions to model
