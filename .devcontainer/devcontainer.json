@@ -11,4 +11,7 @@
   },
   "features": {},
   "postCreateCommand": "bash .devcontainer/setup.sh"
+  "containerEnv": {
+  	"GRB_LICENSE_FILE": "/opt/gurobi.lic"
+  }
 }

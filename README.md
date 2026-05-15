@@ -4,7 +4,7 @@
 
 Hell friend. 
 
-In this introduction, we will cover some first topics regarding **GEnome-scale Metabolic reconstruction (GEM)**. 
+In this introduction, we will cover some first topics regarding **GEnome-scale Metabolic reconstruction (GENRE) and models (GEM)**. 
 We will also go through a few methods of **constraint-based analysis (CBA)** that are typically used with GEMs.
 Last, we will make ourselves familiar with the `cobra` Python library, that is commonly used for parsing and analysing such models. 
 
