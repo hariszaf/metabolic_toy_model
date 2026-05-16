@@ -35,16 +35,21 @@ For any issue or quesion of yours, feel free to contact [Haris](mailto:haris.zaf
 
 ## Agenda
 
-|    Time     |                                                                                     Description                                                                                            |
-|:-----------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| 10:00-10:30 | Convincing you about metabolic models' value  [[slides](https://docs.google.com/presentation/d/1CoUKmzGs6vtJKSa7T8x4LmF-2x5i8GkRXqXHD3H09wg)                                               |
-| 10:30-11:00 | From a genome to a draft Genome Scale Metabolic Reconstruction (GENRE)  [ [notebook](./msc_class.ipynb)]                                                                                   |
-| 11:05-12:30 | Introduction `cobrapy`  [ [notebook](./msc_class.ipynb)]                                                                                                                                   |
-| 12:35-13:30 | From a GENRE to a Genome Scale Model (GEM) [[slides](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/view#slide=id.g352c3d09db5_1_13) \| [notebook]()] |
-| 13:30-14:30 |                                                                                 Lunch break                                                                                                |
-| 14:30-15:30 | Constraint-Based Analysis methods                         [ [notebook](./Antony2025/computationalMethods.ipynb#FBA)]                                                                       |
-| 15:35-16:30 | Flux Variability Analysis (FVA) & Flux Sampling    [ [notebook]()] |
-| 16:35-18:00 | Metabolic modeling applications  [ [list of cool papers](https://docs.google.com/presentation/d/19GMkwZJ-gFmE8xdhqEezDy51l6U-X91xTvhElyZoVio/edit?usp=sharing)] |
+|    Time     |                                                                                     Description                                                                                              |
+|:-----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| 10:00-10:45 | Convincing you about metabolic models' value [ [slides](https://docs.google.com/presentation/d/1CoUKmzGs6vtJKSa7T8x4LmF-2x5i8GkRXqXHD3H09wg) \| [ [notebook](./msc_class.ipynb)] ]           |
+| 10:45:11.00 | Preparing our coding environment [ [notebook](./prep_env.ipynb) ]                                                                                                                            |
+| 11.00-11.10 |                                                                           Short break ☕                                                                                                     |
+| 11:10-11:40 | From a genome to a draft Genome Scale Metabolic Reconstruction (GENRE)  [ [slides](https://docs.google.com/presentation/d/1CoUKmzGs6vtJKSa7T8x4LmF-2x5i8GkRXqXHD3H09wg/edit?slide=id.g3e268bef0d4_0_11441#slide=id.g3e268bef0d4_0_11441)  ]                                                                                                                                                                                     |
+| 11:40-12:30 | Introduction to `cobrapy`  [ [notebook](./msc_class.ipynb)]                                                                                                                                  |
+| 12.30-12.40 |                                                                           Short break ☕                                                                                                     |
+| 12:40-13:30 | From a GENRE to a Genome Scale Model (GEM) [[slides](https://docs.google.com/presentation/d/1w0fhaz9G74UtEp7qEqdKYbYJpboj_SXjU-J2IxFrlhs/view#slide=id.g352c3d09db5_1_13) \| [notebook]()]   |
+| 13:30-14:30 |                                                                                 Lunch break 🍜                                                                                               |
+| 14:30-16:00 | Constraint-Based Analysis methods (FBA, FVA, sampling, dFBA)  [ [notebook](./msc_class.ipynb)]                                                                                               |
+| 16.00-16.10 |                                                                           Short break ☕                                                                                                     |
+| 16:10-17:00 | Tasks and report preparation [ [notebook](./msc_class.ipynb#)]                                                                                                                               |
+| 17.00-17.10 |                                                                           Short break ☕                                                                                                     |
+| 17:10-18:00 | Metabolic modeling applications  [ [list of cool papers](https://docs.google.com/presentation/d/19GMkwZJ-gFmE8xdhqEezDy51l6U-X91xTvhElyZoVio/edit?usp=sharing)]                              |
 
 
 The agenda is indicative and it will be shapes in real-time based on how we deal with the metabolic modeling challenges. :rocket:
